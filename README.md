@@ -26,5 +26,5 @@ ProjetProgrammationWeb/
 │
 ├── .gitignore
 ├── README.md
-└── index.php   # (à créer pour ton Front Controller)
+└── index.
 ```

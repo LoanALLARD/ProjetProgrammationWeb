@@ -1,17 +1,31 @@
 <?php
 class Database {
     private static $instance = null;
+    private $connection;
+
+    private function __construct() {
+        $config = require __DIR__ . '/../config/config.php';
+
+        $this->connection = new mysqli(
+            $config['db_host'],
+            $config['db_user'],
+            $config['db_pass'],
+            $config['db_name']
+        );
+
+        if ($this->connection->connect_error) {
+            die("Erreur de connexion MySQLi: " . $this->connection->connect_error);
+        }
+    }
 
     public static function getInstance() {
         if (self::$instance === null) {
-            $config = require __DIR__ . '/../config/config.php';
-            self::$instance = new PDO(
-                "mysql:host=".$config['db_host'].";dbname=".$config['db_name'],
-                $config['db_user'],
-                $config['db_pass']
-            );
-            self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            self::$instance = new Database();
         }
         return self::$instance;
+    }
+
+    public function getConnection() {
+        return $this->connection;
     }
 }

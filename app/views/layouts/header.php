@@ -10,9 +10,9 @@
     <header>
         <nav>
             <ul style="list-style:none; display:flex; gap:15px; padding:0;">
-                <li><a href="/home/index">Accueil</a></li>
-                <li><a href="/user/list">Utilisateurs</a></li>
-                <li><a href="/about/index">À propos</a></li>
+                <li><a href="/index.php?url=home/index">Accueil</a></li>
+                <li><a href="/index.php?url=login/index">Connexion</a></li>
+                <li><a href="/index.php?url=register/index">S'inscrire</a></li>
             </ul>
         </nav>
     </header>

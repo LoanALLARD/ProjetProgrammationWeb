@@ -3,28 +3,31 @@ Projet Programmation Web côté serveur - IUT Informatique Aix en Provence
 
 ```
 ProjetProgrammationWeb/
-├── _assets/
-│   ├── config/
-│   ├── fonts/
-│   ├── images/
-│   │   └── icons/
-│   ├── includes/
-│   │   └── exceptions/
-│   ├── libs/
-│   ├── logs/
-│   ├── scripts/
-│   ├── styles/
-│   ├── utils/
-│   └── webfonts/
 │
-├── modules/
-│   └── blog/
-│       ├── controllers/
-│       │   └── comment/
-│       ├── models/
-│       └── views/
+├── public/
+│   └── assets/
 │
-├── .gitignore
-├── README.md
-└── index.
+├── app/
+│   ├── controllers/
+│   │   └── HomeController.php
+│   │
+│   ├── models/
+│   │   └── User.php
+│   │
+│   ├── views/
+│   │   ├── layouts/
+│   │   │   ├── header.php
+│   │   │   └── footer.php
+│   │   └── home.php
+│   │
+│   ├── core/
+│   │   ├── Router.php
+│   │   ├── Controller.php
+│   │   └── Database.php
+│   │
+│   └── config/
+│       └── config.php
+│
+├── .htaccess
+└── index.php
 ```

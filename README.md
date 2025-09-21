@@ -4,9 +4,6 @@ Projet Programmation Web côté serveur - IUT Informatique Aix en Provence
 ```
 ProjetProgrammationWeb/
 │
-├── public/
-│   └── assets/
-│
 ├── app/
 │   ├── controllers/
 │   │   └── HomeController.php
@@ -27,6 +24,9 @@ ProjetProgrammationWeb/
 │   │
 │   └── config/
 │       └── config.php
+│
+├── public/
+│   └── assets/
 │
 ├── .htaccess
 └── index.php

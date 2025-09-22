@@ -6,7 +6,9 @@ ProjetProgrammationWeb/
 │
 ├── app/
 │   ├── controllers/
-│   │   └── HomeController.php
+│   │   ├── HomeController.php
+│   │   ├── LoginController.php
+│   │   └── RegisterController.php
 │   │
 │   ├── models/
 │   │   └── User.php
@@ -15,7 +17,9 @@ ProjetProgrammationWeb/
 │   │   ├── layouts/
 │   │   │   ├── header.php
 │   │   │   └── footer.php
-│   │   └── home.php
+│   │   ├── home.php
+│   │   ├── login.php
+│   │   └── register.php
 │   │
 │   ├── core/
 │   │   ├── Router.php
@@ -27,6 +31,8 @@ ProjetProgrammationWeb/
 │
 ├── public/
 │   └── assets/
+│       └── styles/
+│           └── styles.css
 │
 ├── .htaccess
 └── index.php

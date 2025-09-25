@@ -10,7 +10,7 @@
         <input type="submit" value="Connexion">
 
         <a href="/index.php?url=register/index">Vous n'avez pas de compte ?</a>
-        <p>Mot de passe oublié ?</p>
+        <a href="/index.php?url=forgottenpassword/index">Mot de passe oublié ?</a>
     </form>
 
 <?php require __DIR__ . '/layouts/footer.php' ?>

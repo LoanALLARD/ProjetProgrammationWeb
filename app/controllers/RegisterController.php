@@ -8,6 +8,7 @@ use core\Database;
 class RegisterController
 {
     public function index() {
+        $pageTitle = "Inscription";
         require __DIR__ . '/../views/register.php';
     }
 

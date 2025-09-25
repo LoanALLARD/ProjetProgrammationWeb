@@ -7,12 +7,13 @@ use core\Database;
 class LoginController
 {
     public function index() {
+        $pageTitle = "Connexion";
         require __DIR__ . '/../views/login.php';
     }
 
     public function login() {
         try {
-            // Validation des données reçues
+            // Validation of received dataq
             if (empty($_POST["identifiant"]) || empty($_POST["password"])) {
                 echo "Identifiant et mot de passe requis !";
                 return;
@@ -23,7 +24,7 @@ class LoginController
             $identifiant = trim($_POST["identifiant"]);
             $password = $_POST["password"];
 
-            // Requête sécurisée avec paramètres liés
+            // Query with linked parameters
             $stmt = $db->prepare("SELECT * FROM users WHERE IDENTIFIANT = ?");
             $stmt->bind_param("s", $identifiant);
             $stmt->execute();
@@ -32,14 +33,12 @@ class LoginController
             $user = $result->fetch_assoc();
 
             if ($user && password_verify($password, $user['PASSWORD'])) {
-                // Connexion réussie - démarrer la session
+                // Login successful - start session
                 session_start();
                 $_SESSION['user_id'] = $user['ID'];
                 $_SESSION['identifiant'] = $user['IDENTIFIANT'];
 
                 echo "Connexion réussie !";
-                // Redirection possible ici
-                // header('Location: /dashboard');
             } else {
                 echo "Identifiant ou mot de passe incorrect !";
             }

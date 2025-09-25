@@ -2,7 +2,7 @@
 
 namespace controllers;
 
-class ForgottenPasswordController
+class ForgottenpasswordController
 {
 
     public function index() {

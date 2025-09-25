@@ -2,7 +2,7 @@
 
 namespace controllers;
 
-class SiteMapController
+class SitemapController
 {
     public function index() {
         $pageTitle = "Plan du site";

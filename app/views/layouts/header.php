@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($pageTitle) ? $pageTitle : 'Sans titre' ?> | PDW</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link rel="stylesheet" href="/public/assets/style.css">
+    <link rel="icon" type="image/x-icon" href="/public/assets/favicon.ico"/>
 </head>
 <body>
     <header>

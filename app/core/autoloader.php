@@ -1,5 +1,6 @@
 <?php
-// app/core/Autoloader.php
+
+namespace core;
 
 spl_autoload_register(function ($class) {
     // Remplace les namespaces par des chemins de dossier

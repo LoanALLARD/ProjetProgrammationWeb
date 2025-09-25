@@ -1,4 +1,6 @@
 <?php
+
+namespace core;
 class Database {
     private static $instance = null;
     private $connection;
@@ -6,7 +8,7 @@ class Database {
     private function __construct() {
         $config = require __DIR__ . '/../config/config.php';
 
-        $this->connection = new mysqli(
+        $this->connection = new \mysqli(
             $config['db_host'],
             $config['db_user'],
             $config['db_pass'],

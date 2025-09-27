@@ -2,8 +2,19 @@
 
 namespace controllers;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require __DIR__ . '/../../vendor/autoload.php';
+
 class ForgottenpasswordController
 {
+
+    private array $config;
+
+    public function __construct() {
+        $this->config = require __DIR__ . '/../config/config.php';
+    }
 
     public function index() {
         $pageTitle = "Mot de passe oublié";
@@ -11,17 +22,37 @@ class ForgottenpasswordController
     }
 
     public function changePassword() {
-        $email = $_POST['email'];
+        $this->config = require __DIR__ . '/../config/config.php';
+        $emailDestinataire = $_POST['email'];
+        try {
+            $mail = new PHPMailer(true);
 
-        if(isset($_POST['email'])) {
-            $message = "Bojour, voici votre nouveau mot de passe : ";
-            $headers = 'Content-type: text/html; charset=UTF-8';
+            $mail->isSMTP();
+            $mail->Host       = $this->config['smtp_host'];
+            $mail->Port       = $this->config['smtp_port'];
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $this->config['smtp_user'];
+            $mail->Password   = $this->config['smtp_pass'];
+            $mail->SMTPSecure = $this->config['smtp_secure'];
 
-            if(mail($_POST['email'], 'Mot de passe oublié', $message, $headers)) {
-                echo 'Mail envoyé';
-            } else {
-                echo 'Une erreur est survenue lors de l\'envoi du mail';
-            }
+            $mail->setFrom($this->config['smtp_user'], 'PDW');
+
+            $code = random_bytes(6);
+
+            // Recipient
+            $mail->addAddress($emailDestinataire);
+
+            // Email content
+            $mail->isHTML(true);
+            $mail->Subject = 'Réinitialisation de votre mot de passe';
+            $mail->Body    = '<p>Bonjour, suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><br> Code : ' . $code . '<br><p>L\'équipe de PDW vous remercie.</p>';
+            $mail->AltBody = 'Bonjour ! Ceci est la version texte du mail.';
+
+            $mail->send();
+
+            echo "Mail envoyé avec succès";
+        } catch (Exception $e) {
+            echo "Erreur lors de l’envoi du mail : {$mail->ErrorInfo}";
         }
     }
 

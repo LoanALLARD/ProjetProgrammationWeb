@@ -13,7 +13,7 @@ class LoginController
 
     public function login() {
         try {
-            // Validation of received dataq
+            // Validation of received data
             if (empty($_POST["identifiant"]) || empty($_POST["password"])) {
                 echo "Identifiant et mot de passe requis !";
                 return;
@@ -33,7 +33,7 @@ class LoginController
             $user = $result->fetch_assoc();
 
             if ($user && password_verify($password, $user['PASSWORD'])) {
-                // Login successful - start session
+                // Login successful, start session
                 session_start();
                 $_SESSION['user_id'] = $user['ID'];
                 $_SESSION['identifiant'] = $user['IDENTIFIANT'];

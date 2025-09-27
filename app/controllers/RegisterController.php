@@ -14,32 +14,32 @@ class RegisterController
 
     public function register() {
         try {
-            // Validation des données reçues
+            // Validation of received data
             $identifiant = trim($_POST['identifiant'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $telephone = trim($_POST['telephone'] ?? '');
             $password = $_POST['password'] ?? '';
             $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
 
-            // Vérifications de base
+            // Basic validation
             if (empty($identifiant) || empty($email) || empty($password)) {
                 echo "Identifiant, email et mot de passe sont requis !";
                 return;
             }
 
-            // Vérifier que les mots de passe correspondent
+            // Check that the passwords match.
             if ($password !== $passwordConfirmation) {
                 echo "Les mots de passe ne correspondent pas !";
                 return;
             }
 
-            // Validation de l'email
+            // Email validation
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 echo "Format d'email invalide !";
                 return;
             }
 
-            // Validation du mot de passe (exemple : minimum 8 caractères)
+            // Password validation
             if (strlen($password) < 8) {
                 echo "Le mot de passe doit contenir au moins 8 caractères !";
                 return;
@@ -47,7 +47,7 @@ class RegisterController
 
             $db = Database::getInstance()->getConnection();
 
-            // Vérifier si l'identifiant ou l'email existe déjà
+            // Check whether the username or email address already exists
             $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE IDENTIFIANT = ? OR EMAIL = ?");
             $checkStmt->bind_param("ss", $identifiant, $email);
             $checkStmt->execute();
@@ -61,20 +61,20 @@ class RegisterController
             }
             $checkStmt->close();
 
-            // Hachage du mot de passe
+            // Password hashing
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $inscription_date = date("Y-m-d H:i:s");
 
-            // Insertion du nouvel utilisateur (attention au nom de table : "users" pas "user")
+            // Inserting the new user into the database
             $stmt = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sssss", $identifiant, $email, $telephone, $hash, $inscription_date);
 
             if ($stmt->execute()) {
                 echo "Inscription réussie !";
-                // Optionnel : connecter automatiquement l'utilisateur
-                // session_start();
-                // $_SESSION['user_id'] = $db->insert_id;
-                // $_SESSION['identifiant'] = $identifiant;
+                // Automatic user login
+                 session_start();
+                 $_SESSION['user_id'] = $db->insert_id;
+                 $_SESSION['identifiant'] = $identifiant;
             } else {
                 echo "Erreur lors de l'inscription : " . $stmt->error;
             }

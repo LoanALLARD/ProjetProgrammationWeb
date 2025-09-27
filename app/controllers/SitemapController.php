@@ -10,8 +10,7 @@ class SitemapController {
     }
 
     public function index() {
-        $controllersDir = __DIR__;
-        $controllerFiles = glob($controllersDir . '/*Controller.php');
+        $controllerFiles = glob(__DIR__ . '/*Controller.php');
 
         foreach ($controllerFiles as $file) {
             $filename = basename($file, '.php');

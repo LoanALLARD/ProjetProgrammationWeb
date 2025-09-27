@@ -2,7 +2,7 @@
 
 <p>Plan du site</p>
 <ul>
-    <?php foreach ($tabPages as $page): ?>
+    <?php foreach ($pages as $page): ?>
         <li><a href="<?= $page['url']; ?>"><?= $page['title']; ?></a></li>
     <?php endforeach; ?>
 </ul>

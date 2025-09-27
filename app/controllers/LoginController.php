@@ -19,6 +19,7 @@ class LoginController
                 return;
             }
 
+            // Retrieve the instance to connect to the database
             $db = Database::getInstance()->getConnection();
 
             $identifiant = trim($_POST["identifiant"]);

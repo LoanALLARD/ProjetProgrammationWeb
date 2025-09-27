@@ -10,6 +10,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 class ForgottenpasswordController
 {
 
+    // Array to store SMTP's configuration
     private array $config;
 
     public function __construct() {
@@ -22,11 +23,13 @@ class ForgottenpasswordController
     }
 
     public function changePassword() {
-        $this->config = require __DIR__ . '/../config/config.php';
+        // Retreives the email adress entered
         $emailDestinataire = $_POST['email'];
+
         try {
             $mail = new PHPMailer(true);
 
+            // Store SMTP configuration -> $mail
             $mail->isSMTP();
             $mail->Host       = $this->config['smtp_host'];
             $mail->Port       = $this->config['smtp_port'];
@@ -35,9 +38,8 @@ class ForgottenpasswordController
             $mail->Password   = $this->config['smtp_pass'];
             $mail->SMTPSecure = $this->config['smtp_secure'];
 
+            // Email information (sender, website name)
             $mail->setFrom($this->config['smtp_user'], 'PDW');
-
-            $code = random_bytes(6);
 
             // Recipient
             $mail->addAddress($emailDestinataire);
@@ -45,9 +47,10 @@ class ForgottenpasswordController
             // Email content
             $mail->isHTML(true);
             $mail->Subject = 'Réinitialisation de votre mot de passe';
-            $mail->Body    = '<p>Bonjour, suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><br> Code : ' . $code . '<br><p>L\'équipe de PDW vous remercie.</p>';
+            $mail->Body    = '<p>Bonjour, suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><br> Code : code <br><p>L\'équipe de PDW vous remercie.</p>';
             $mail->AltBody = 'Bonjour ! Ceci est la version texte du mail.';
 
+            // Send email
             $mail->send();
 
             echo "Mail envoyé avec succès";

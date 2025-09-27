@@ -1,5 +1,5 @@
-    <footer style="text-align:center; padding:20px; border-top:1px solid #ccc;">
-        <p>Copyright &copy; <?= date('Y') ?>...</p>
+    <footer style="text-align:center; padding:20px;">
+        <p>Copyright &copy; <?= date('Y') ?> Evan - Loan</p>
     </footer>
 </body>
 </html>

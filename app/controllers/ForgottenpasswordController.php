@@ -2,7 +2,7 @@
 
 namespace controllers;
 
-use http\Message\Body;
+use core\Database;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -40,6 +40,21 @@ class ForgottenpasswordController
         session_start();
         // Retreives the email adress entered
         $emailDestinataire = $_POST['email'];
+
+        $db = Database::getInstance()->getConnection();
+
+        // Check if the email exist
+        $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE EMAIL = ?");
+        $checkStmt->bind_param("s", $emailDestinataire);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+        $count = $checkResult->fetch_row()[0];
+
+        if ($count === 0) {
+            echo "L'adresse e-mail n'existe pas !";
+            $checkStmt->close();
+            return;
+        }
 
         try {
             $mail = new PHPMailer(true);
@@ -103,6 +118,28 @@ class ForgottenpasswordController
         } else {
             echo "Code incorrect";
         }
+    }
+
+    public function updatePassword() {
+        session_start();
+        $password = $_POST['password'] ?? '';
+        $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
+
+        // Check that the passwords match.
+        if ($password !== $passwordConfirmation) {
+            echo "Les mots de passe ne correspondent pas !";
+            return;
+        }
+
+        // Password validation
+        if (strlen($password) < 8) {
+            echo "Le mot de passe doit contenir au moins 8 caractères !";
+            return;
+        }
+
+        $db = Database::getInstance()->getConnection();
+
+        $hash = password_hash($password, PASSWORD_DEFAULT);
     }
 
 

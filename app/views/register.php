@@ -1,5 +1,6 @@
 <?php require __DIR__ . '/layouts/header.php'; ?>
 
+    <p class="pageTitle">Inscription</p>
     <form method="POST" action="/index.php?url=register/register">
         <p>Identifiant</p>
         <input type="text" name="identifiant" required>

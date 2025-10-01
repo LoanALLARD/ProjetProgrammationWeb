@@ -12,42 +12,36 @@ class LoginController
     }
 
     public function login() {
+        session_start();
         try {
-            // Validation of received data
-            if (empty($_POST["identifiant"]) || empty($_POST["password"])) {
-                echo "Identifiant et mot de passe requis !";
-                return;
-            }
-
-            // Retrieve the instance to connect to the database
+            // get instance od the database
             $db = Database::getInstance()->getConnection();
-
             $identifiant = trim($_POST["identifiant"]);
             $password = $_POST["password"];
 
-            // Query with linked parameters
+            // Retrieves information from the database
             $stmt = $db->prepare("SELECT * FROM users WHERE IDENTIFIANT = ?");
             $stmt->bind_param("s", $identifiant);
             $stmt->execute();
-
             $result = $stmt->get_result();
             $user = $result->fetch_assoc();
 
-            if ($user && password_verify($password, $user['PASSWORD'])) {
-                // Login successful, start session
-                session_start();
+            // Check the validity of the information
+            if ($user =! null && password_verify($password, $user['PASSWORD'])) {
                 $_SESSION['user_id'] = $user['ID'];
                 $_SESSION['identifiant'] = $user['IDENTIFIANT'];
-
-                echo "Connexion réussie !";
+                $_SESSION['success'] = "Connexion réussie !";
+                header("Location: /index.php?url=home/index");
+                exit;
             } else {
-                echo "Identifiant ou mot de passe incorrect !";
+                $_SESSION['error'] = "Identifiant ou mot de passe incorrect !";
+                header("Location: /index.php?url=login/index");
+                exit;
             }
-
-            $stmt->close();
-
-        } catch (Exception $e) {
-            echo "Erreur lors de la connexion : " . $e->getMessage();
+        } catch (\Exception $e) {
+            $_SESSION['error'] = "Erreur lors de la connexion : " . $e->getMessage();
+            header("Location: /index.php?url=login/index");
+            exit;
         }
     }
 }

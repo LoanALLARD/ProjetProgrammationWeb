@@ -1,18 +1,21 @@
 <?php
 
 namespace core;
-class Router {
-    public function run() {
-        // if $_GET['url'] is not null, use it, else use home/index
-        $url = $_GET['url'] ?? 'home/index';
 
-        // Cut the string $url with /
-        // => $params = []
+class Router {
+
+    // Table de correspondance pour les cas spéciaux
+    private array $controllerMap = [
+        'forgottenpassword' => 'ForgottenPassword',
+        'updatepassword' => 'UpdatePassword',
+        // Ajoutez ici d'autres contrôleurs multi-mots si nécessaire
+    ];
+
+    public function run() {
+        $url = $_GET['url'] ?? 'home/index';
         $params = explode('/', $url);
 
-        // Build the name of the controller to instantiate
-        $controllerName = 'controllers\\' . ucfirst($params[0]) . 'Controller';
-        // $methosName = $param[1] if exist, else, $methodName = index
+        $controllerName = 'controllers\\' . $this->toPascalCase($params[0]) . 'Controller';
         $methodName = $params[1] ?? 'index';
 
         if (class_exists($controllerName)) {
@@ -26,5 +29,24 @@ class Router {
         } else {
             echo "Contrôleur $controllerName inexistant.";
         }
+    }
+
+    private function toPascalCase($string) {
+        $lowerString = strtolower($string);
+
+        // Vérifier si c'est dans la table de correspondance
+        if (isset($this->controllerMap[$lowerString])) {
+            return $this->controllerMap[$lowerString];
+        }
+
+        // Si la chaîne contient déjà des majuscules, on la garde
+        if (preg_match('/[A-Z]/', $string)) {
+            return ucfirst($string);
+        }
+
+        // Sinon, traiter les séparateurs
+        $string = str_replace(['-', '_'], ' ', $lowerString);
+        $string = ucwords($string);
+        return str_replace(' ', '', $string);
     }
 }

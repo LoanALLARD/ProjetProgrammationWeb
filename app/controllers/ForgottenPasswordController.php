@@ -8,139 +8,102 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-class ForgottenpasswordController
+class ForgottenPasswordController
 {
-
-    // Int to store reset code
-    private int $code = 0;
-
-    // Array to store SMTP's configuration
     private array $config;
 
     public function __construct() {
+        // Démarrer la session UNE SEULE FOIS au début
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $this->config = require __DIR__ . '/../config/config.php';
     }
 
     public function index() {
         $pageTitle = "Mot de passe oublié";
+
+        // Récupérer et supprimer les messages d'erreur
+        $errorMessage = $_SESSION['error_message'] ?? null;
+        unset($_SESSION['error_message']);
+
         require __DIR__ . '/../views/forgottenPassword.php';
     }
 
-    // Getter $code
-    public function getCode(): int {
-        return $this->code;
-    }
+    public function changePassword()
+    {
+        // Verify that the email address is provided
+        if (empty($_POST['email'])) {
+            $_SESSION['error_message'] = "Veuillez saisir une adresse e-mail.";
+            header('Location: index.php?url=forgotten-password/index');
+            exit;
+        }
 
-    // Setter $code
-    public function setCode(int $code): void {
-        $this->code = $code;
-    }
-
-    public function changePassword() {
-        session_start();
-        // Retreives the email adress entered
-        $emailDestinataire = $_POST['email'];
-
+        $emailDestinataire = trim($_POST['email']);
         $db = Database::getInstance()->getConnection();
 
-        // Check if the email exist
+        // Check if the email exists in the DB
         $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE EMAIL = ?");
         $checkStmt->bind_param("s", $emailDestinataire);
         $checkStmt->execute();
         $checkResult = $checkStmt->get_result();
         $count = $checkResult->fetch_row()[0];
+        $checkStmt->close();
 
         if ($count === 0) {
-            echo "L'adresse e-mail n'existe pas !";
-            $checkStmt->close();
-            return;
+            $_SESSION['error_message'] = "L'adresse e-mail n'existe pas !";
+            header('Location: index.php?url=forgotten-password/index');
+            exit;
         }
+
+        // Generate the code before sending the email
+        $code = $this->generationCode();
 
         try {
             $mail = new PHPMailer(true);
 
-            // Store SMTP configuration -> $mail
+            // SMTP configuration
             $mail->isSMTP();
-            $mail->Host       = $this->config['smtp_host'];
-            $mail->Port       = $this->config['smtp_port'];
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $this->config['smtp_user'];
-            $mail->Password   = $this->config['smtp_pass'];
+            $mail->Host = $this->config['smtp_host'];
+            $mail->Port = $this->config['smtp_port'];
+            $mail->SMTPAuth = true;
+            $mail->Username = $this->config['smtp_user'];
+            $mail->Password = $this->config['smtp_pass'];
             $mail->SMTPSecure = $this->config['smtp_secure'];
 
-            // Email information (sender, website name)
+            // Sender and recipient
             $mail->setFrom($this->config['smtp_user'], 'PDW');
-
-            // Recipient
             $mail->addAddress($emailDestinataire);
-
-            $this->generationCode();
 
             // Email content
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Réinitialisation de votre mot de passe';
-            $mail->Body    = '<p>Bonjour, suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p>Code : ' . $this->getCode() . '<br><p>L\'équipe de PDW vous remercie.</p>';
-            $mail->AltBody = 'Bonjour ! Ceci est la version texte du mail.';
+            $mail->Body = '<p>Bonjour,</p><p>Suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><p><strong>Code : ' . $code . '</strong></p><p>L\'équipe de PDW vous remercie.</p>';
+            $mail->AltBody = 'Bonjour ! Code de réinitialisation : ' . $code;
 
             // Send email
             $mail->send();
 
-            require __DIR__ . '/../views/resetPassword.php';
+            // Save the email for the next step
+            $_SESSION['reset_email'] = $emailDestinataire;
+            $_SESSION['success_message'] = "Un code de réinitialisation a été envoyé à votre adresse e-mail.";
+
+            // Redirect to the code entry page
+            header('Location: index.php?url=reset-password/index');
+            exit;
+
         } catch (Exception $e) {
-            echo "Erreur lors de l’envoi du mail : {$mail->ErrorInfo}";
+            $_SESSION['error_message'] = "Erreur lors de l'envoi du mail. Veuillez réessayer.";
+            header('Location: index.php?url=forgotten-password/index');
+            exit;
         }
     }
 
-    public function generationCode() {
+    private function generationCode(): int {
         $code = random_int(100000, 999999);
-        $this->setCode($code);
         $_SESSION['reset_code'] = $code;
+        $_SESSION['reset_code_time'] = time(); // Pour expiration (optionnel)
+        return $code;
     }
-
-    public function verificationCode() {
-        session_start();
-        $enteredCode = $_POST['enteredCode'] ?? null;
-
-        if ($enteredCode === null) {
-            echo "Aucun code saisi.";
-            return;
-        }
-
-        $savedCode = $_SESSION['reset_code'] ?? null;
-
-        if ($savedCode === null) {
-            echo "Aucun code généré.";
-            return;
-        }
-        if ((int)$enteredCode === (int)$savedCode) {
-            echo "Code correct";
-        } else {
-            echo "Code incorrect";
-        }
-    }
-
-    public function updatePassword() {
-        session_start();
-        $password = $_POST['password'] ?? '';
-        $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
-
-        // Check that the passwords match.
-        if ($password !== $passwordConfirmation) {
-            echo "Les mots de passe ne correspondent pas !";
-            return;
-        }
-
-        // Password validation
-        if (strlen($password) < 8) {
-            echo "Le mot de passe doit contenir au moins 8 caractères !";
-            return;
-        }
-
-        $db = Database::getInstance()->getConnection();
-
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-    }
-
-
 }

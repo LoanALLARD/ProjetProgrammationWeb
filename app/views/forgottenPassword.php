@@ -1,6 +1,6 @@
 <?php require __DIR__ . '/layouts/header.php'; ?>
 
-<p>Mot de passe oublié</p>
+<p class="pageTitle">Mot de passe oublié</p>
 <p>Recevoir un mail de récupération</p>
 <form method="POST" action="/index.php?url=forgottenpassword/changePassword">
     <p>Veuillez saisir votre adresse mail</p>

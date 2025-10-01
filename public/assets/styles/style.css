@@ -1,0 +1,208 @@
+:root {
+    --rich-black: #171a21ff;
+    --paynes-gray: #617073ff;
+    --air-superiority-blue: #7a93acff;
+    --jordy-blue: #171a21;
+    --periwinkle: #F5F5F0;
+    --white: #ffffff;
+}
+
+/* Reset & global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background-color: var(--periwinkle); /* fond visible, pas blanc */
+    color: var(--rich-black);
+    line-height: 1.5;
+}
+
+/* Navbar */
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--jordy-blue);
+    padding: 12px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#navTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+#navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navElementsText {
+    text-decoration: none;
+    color: var(--white);
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.navElementsText:hover {
+    color: var(--air-superiority-blue);
+    transform: translateY(-2px);
+}
+
+/* Forms */
+form {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form p,
+form > p {
+    font-weight: 500;
+    color: var(--rich-black);
+    margin-bottom: 3px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="password"] {
+    padding: 10px 12px;
+    border: 1px solid var(--paynes-gray);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+form input:focus {
+    outline: none;
+    border-color: var(--jordy-blue);
+    box-shadow: 0 0 0 3px rgba(146, 188, 234, 0.2);
+}
+
+form input[type="submit"] {
+    padding: 10px 16px;
+    background-color: var(--jordy-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+form input[type="submit"]:hover {
+    background-color: var(--air-superiority-blue);
+    transform: translateY(-1px);
+}
+
+form a {
+    color: var(--jordy-blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+form a:hover {
+    color: var(--air-superiority-blue);
+}
+
+/* Explanatory paragraphs outside the form */
+p {
+    text-align: center;
+    color: var(--rich-black);
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+/* Site Map */
+
+/* Conteneur */
+#sitemapContainer {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Titre de page */
+.pageTitle {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--rich-black);
+    margin-bottom: 20px;
+}
+
+/* Liste */
+#sitemapList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* espace entre items */
+}
+
+/* Liens */
+.sitemapLink {
+    display: block;
+    padding: 10px 15px;
+    background-color: var(--white);
+    border-radius: 8px;
+    color: var(--jordy-blue);
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid var(--paynes-gray);
+    transition: background-color 0.2s, transform 0.2s, color 0.2s;
+}
+
+.sitemapLink:hover {
+    background-color: var(--air-superiority-blue);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #sitemapContainer {
+        padding: 15px;
+        margin: 20px 10px;
+    }
+}
+
+/* Footer */
+footer {
+    background-color: var(--jordy-blue);
+    border-top: 1px solid var(--air-superiority-blue);
+    text-align: center;
+    padding: 16px;
+    font-size: 0.9rem;
+    color: var(--white);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    form {
+        margin: 20px 15px;
+        padding: 15px;
+    }
+}

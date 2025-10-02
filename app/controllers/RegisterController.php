@@ -7,6 +7,13 @@ use core\Database;
 
 class RegisterController
 {
+
+    public function __construct() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     public function index() {
         $pageTitle = "Inscription";
         require __DIR__ . '/../views/register.php';
@@ -14,40 +21,38 @@ class RegisterController
 
     public function register() {
         try {
-            // Validation of received data
             $identifiant = trim($_POST['identifiant'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $telephone = trim($_POST['telephone'] ?? '');
             $password = $_POST['password'] ?? '';
             $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
 
-            // Basic validation
-            if (empty($identifiant) || empty($email) || empty($password)) {
-                echo "Identifiant, email et mot de passe sont requis !";
-                return;
-            }
+            /*if (empty($identifiant) || empty($email) || empty($password)) {
+                $_SESSION['error'] = "Identifiant, email et mot de passe sont requis !";
+                header("Location: /index.php?url=register/index");
+                exit;
+            }*/
 
-            // Check that the passwords match.
             if ($password !== $passwordConfirmation) {
-                echo "Les mots de passe ne correspondent pas !";
-                return;
+                $_SESSION['error'] = "Les mots de passe ne correspondent pas !";
+                header("Location: /index.php?url=register/index");
+                exit;
             }
 
-            // Email validation
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "Format d'email invalide !";
-                return;
+                $_SESSION['error'] = "Format d'email invalide !";
+                header("Location: /index.php?url=register/index");
+                exit;
             }
 
-            // Password validation
             if (strlen($password) < 8) {
-                echo "Le mot de passe doit contenir au moins 8 caractères !";
-                return;
+                $_SESSION['error'] = "Le mot de passe doit contenir au moins 8 caractères !";
+                header("Location: /index.php?url=register/index");
+                exit;
             }
 
             $db = Database::getInstance()->getConnection();
 
-            // Check whether the username or email address already exists
             $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE IDENTIFIANT = ? OR EMAIL = ?");
             $checkStmt->bind_param("ss", $identifiant, $email);
             $checkStmt->execute();
@@ -55,34 +60,37 @@ class RegisterController
             $count = $checkResult->fetch_row()[0];
 
             if ($count > 0) {
-                echo "Cet identifiant ou cet email est déjà utilisé !";
+                $_SESSION['error'] = "Cet identifiant ou cet email est déjà utilisé !";
                 $checkStmt->close();
-                return;
+                header("Location: /index.php?url=register/index");
+                exit;
             }
             $checkStmt->close();
 
-            // Password hashing
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $inscription_date = date("Y-m-d H:i:s");
 
-            // Inserting the new user into the database
             $stmt = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sssss", $identifiant, $email, $telephone, $hash, $inscription_date);
 
             if ($stmt->execute()) {
-                echo "Inscription réussie !";
-                // Automatic user login
-                 session_start();
-                 $_SESSION['user_id'] = $db->insert_id;
-                 $_SESSION['identifiant'] = $identifiant;
+                $_SESSION['success'] = "Inscription réussie !";
+                $_SESSION['user_id'] = $db->insert_id;
+                $_SESSION['identifiant'] = $identifiant;
+                header("Location: /index.php?url=register/index");
+                exit;
             } else {
-                echo "Erreur lors de l'inscription : " . $stmt->error;
+                $_SESSION['error'] = "Erreur lors de l'inscription : " . $stmt->error;
+                header("Location: /index.php?url=register/index");
+                exit;
             }
 
             $stmt->close();
 
         } catch (Exception $e) {
-            echo "Erreur lors de l'inscription : " . $e->getMessage();
+            $_SESSION['error'] = "Erreur lors de l'inscription : " . $e->getMessage();
+            header("Location: /index.php?url=register/index");
+            exit;
         }
     }
 }

@@ -16,7 +16,7 @@ class Router {
         $url = $_GET['url'] ?? 'home/index';
         $params = explode('/', $url);
 
-        $controllerName = 'controllers\\' . $this->toPascalCase($params[0]) . 'Controller';
+        $controllerName = 'controllers\\' . $this->toUpperCase($params[0]) . 'Controller';
         $methodName = $params[1] ?? 'index';
 
         if (class_exists($controllerName)) {
@@ -32,7 +32,7 @@ class Router {
         }
     }
 
-    private function toPascalCase($string) {
+    private function toUpperCase($string) {
         $lowerString = strtolower($string);
 
         // Check if is in special cases

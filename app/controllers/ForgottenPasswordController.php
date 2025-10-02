@@ -13,7 +13,7 @@ class ForgottenPasswordController
     private array $config;
 
     public function __construct() {
-        // Démarrer la session UNE SEULE FOIS au début
+        // Start the session (only once at the beginning)
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -23,7 +23,7 @@ class ForgottenPasswordController
     public function index() {
         $pageTitle = "Mot de passe oublié";
 
-        // Récupérer et supprimer les messages d'erreur
+        // Retrieve and delete error messages
         $errorMessage = $_SESSION['error_message'] ?? null;
         unset($_SESSION['error_message']);
 
@@ -103,7 +103,7 @@ class ForgottenPasswordController
     private function generationCode(): int {
         $code = random_int(100000, 999999);
         $_SESSION['reset_code'] = $code;
-        $_SESSION['reset_code_time'] = time(); // Pour expiration (optionnel)
+        $_SESSION['reset_code_time'] = time();
         return $code;
     }
 }

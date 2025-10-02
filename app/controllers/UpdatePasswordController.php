@@ -13,7 +13,7 @@ class UpdatePasswordController
     }
 
     public function index() {
-        // Vérifier que le code a été validé
+        // Check that the code has been validated
         if (!isset($_SESSION['code_verified']) || $_SESSION['code_verified'] !== true) {
             $_SESSION['error_message'] = "Vous devez d'abord valider le code de réinitialisation.";
             header('Location: index.php?url=forgotten-password/index');
@@ -22,7 +22,7 @@ class UpdatePasswordController
 
         $pageTitle = "Nouveau mot de passe";
 
-        // Récupérer les messages
+        // Retrieve messages
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
         unset($_SESSION['success_message'], $_SESSION['error_message']);
@@ -31,7 +31,7 @@ class UpdatePasswordController
     }
 
     public function updatePassword() {
-        // Vérifier que le code a été validé
+        // Check that the code has been validated
         if (!isset($_SESSION['code_verified']) || $_SESSION['code_verified'] !== true) {
             $_SESSION['error_message'] = "Session expirée. Veuillez recommencer.";
             header('Location: index.php?url=forgotten-password/index');
@@ -41,26 +41,28 @@ class UpdatePasswordController
         $password = $_POST['password'] ?? '';
         $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
 
-        // Validation du mot de passe
+        // Password validation
         if (empty($password) || empty($passwordConfirmation)) {
             $_SESSION['error_message'] = "Veuillez remplir tous les champs.";
             header('Location: index.php?url=update-password/index');
             exit;
         }
 
+        // Check that the passwords are identical
         if ($password !== $passwordConfirmation) {
             $_SESSION['error_message'] = "Les mots de passe ne correspondent pas !";
             header('Location: index.php?url=update-password/index');
             exit;
         }
 
+        // Password length verification
         if (strlen($password) < 8) {
             $_SESSION['error_message'] = "Le mot de passe doit contenir au moins 8 caractères !";
             header('Location: index.php?url=update-password/index');
             exit;
         }
 
-        // Vérifier qu'on a bien l'email
+        // Check that you have the correct email address.
         if (!isset($_SESSION['reset_email'])) {
             $_SESSION['error_message'] = "Session expirée. Veuillez recommencer.";
             header('Location: index.php?url=forgotten-password/index');
@@ -70,13 +72,13 @@ class UpdatePasswordController
         $email = $_SESSION['reset_email'];
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // Mettre à jour le mot de passe dans la base de données
+        // Update the password in the database
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("UPDATE users SET PASSWORD = ? WHERE EMAIL = ?");
         $stmt->bind_param("ss", $hash, $email);
 
         if ($stmt->execute()) {
-            // Nettoyer toutes les variables de session liées à la réinitialisation
+            // Remove unnecessary SESSION variables
             unset(
                 $_SESSION['reset_code'],
                 $_SESSION['reset_code_time'],
@@ -84,10 +86,12 @@ class UpdatePasswordController
                 $_SESSION['code_verified']
             );
 
+            // Sucess message
             $_SESSION['success_message'] = "Votre mot de passe a été réinitialisé avec succès ! Vous pouvez maintenant vous connecter.";
             header('Location: index.php?url=login/index');
             exit;
         } else {
+            // Error message
             $_SESSION['error_message'] = "Erreur lors de la mise à jour du mot de passe. Veuillez réessayer.";
             header('Location: index.php?url=update-password/index');
             exit;

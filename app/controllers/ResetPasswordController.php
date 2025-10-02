@@ -11,7 +11,7 @@ class ResetPasswordController
     }
 
     public function index() {
-        // Vérifier qu'un code a bien été généré
+        // Check that a code has been generated
         if (!isset($_SESSION['reset_code'])) {
             $_SESSION['error_message'] = "Aucune demande de réinitialisation en cours.";
             header('Location: index.php?url=forgotten-password/index');
@@ -20,7 +20,7 @@ class ResetPasswordController
 
         $pageTitle = "Saisir le code de réinitialisation";
 
-        // Récupérer les messages
+        // Retrieve messages
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
         unset($_SESSION['success_message'], $_SESSION['error_message']);
@@ -29,7 +29,7 @@ class ResetPasswordController
     }
 
     public function verificationCode() {
-        // Vérifier que le code est fourni
+        // Check if the code is provided
         if (empty($_POST['enteredCode'])) {
             $_SESSION['error_message'] = "Veuillez saisir le code reçu par e-mail.";
             header('Location: index.php?url=reset-password/index');
@@ -39,16 +39,17 @@ class ResetPasswordController
         $enteredCode = trim($_POST['enteredCode']);
         $savedCode = $_SESSION['reset_code'] ?? null;
 
+        // Check if the code has been generated
         if ($savedCode === null) {
             $_SESSION['error_message'] = "Aucun code généré. Veuillez recommencer la procédure.";
             header('Location: index.php?url=forgotten-password/index');
             exit;
         }
 
-        // Vérifier l'expiration du code (optionnel - 15 minutes)
+        // Check the expiry date of the code
         if (isset($_SESSION['reset_code_time'])) {
             $elapsed = time() - $_SESSION['reset_code_time'];
-            if ($elapsed > 900) { // 15 minutes
+            if ($elapsed > 900) { // 900s = 15min
                 unset($_SESSION['reset_code'], $_SESSION['reset_code_time']);
                 $_SESSION['error_message'] = "Le code a expiré. Veuillez recommencer.";
                 header('Location: index.php?url=forgotten-password/index');
@@ -56,13 +57,15 @@ class ResetPasswordController
             }
         }
 
-        // Vérifier le code
+        // Check the code
         if ((int)$enteredCode === (int)$savedCode) {
+            // Sucess message
             $_SESSION['code_verified'] = true;
             $_SESSION['success_message'] = "Code validé ! Veuillez saisir votre nouveau mot de passe.";
             header('Location: index.php?url=update-password/index');
             exit;
         } else {
+            // Error message
             $_SESSION['error_message'] = "Code incorrect. Veuillez réessayer.";
             header('Location: index.php?url=reset-password/index');
             exit;

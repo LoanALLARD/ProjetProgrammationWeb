@@ -14,7 +14,7 @@
             }
         ?>
         <p>Identifiant</p>
-        <input type="text" name="identifiant" required placeholder="ThierryDu13">
+        <input type="text" name="identifiant" required placeholder="VotreIdentifiant">
 
         <p>Mot de passe</p>
         <input type="password" name="password" required placeholder="**********">

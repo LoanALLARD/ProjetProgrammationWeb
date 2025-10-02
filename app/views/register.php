@@ -13,7 +13,7 @@
     }
     ?>
         <p>Identifiant</p>
-        <input type="text" name="identifiant" required placeholder="ThierryDu13">
+        <input type="text" name="identifiant" required placeholder="VotreIdentifiant">
 
         <p>Adresse mail</p>
         <input type="email" name="email" required placeholder="votre@email.com">

@@ -13,19 +13,19 @@
     }
     ?>
         <p>Identifiant</p>
-        <input type="text" name="identifiant" required>
+        <input type="text" name="identifiant" required placeholder="ThierryDu13">
 
         <p>Adresse mail</p>
-        <input type="email" name="email" required>
+        <input type="email" name="email" required placeholder="votre@email.com">
 
         <p>Téléphone</p>
-        <input type="tel" name="telephone">
+        <input type="tel" name="telephone" placeholder="0607080910">
 
         <p>Mot de passe</p>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required  placeholder="**********">
 
         <p>Confirmation du Mot de passe</p>
-        <input type="password" name="passwordConfirmation" required>
+        <input type="password" name="passwordConfirmation" required  placeholder="**********">
 
         <input type="submit" value="S'inscrire">
 

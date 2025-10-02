@@ -14,10 +14,10 @@
             }
         ?>
         <p>Identifiant</p>
-        <input type="text" name="identifiant" required>
+        <input type="text" name="identifiant" required placeholder="ThierryDu13">
 
         <p>Mot de passe</p>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required placeholder="**********">
 
         <input type="submit" value="Connexion">
 

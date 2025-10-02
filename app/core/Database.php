@@ -8,19 +8,14 @@ class Database {
     private function __construct() {
         $config = require __DIR__ . '/../config/config.php';
 
-        // New mysqli connexion
-        $this->connection = new \mysqli(
-            $config['db_host'],
-            $config['db_user'],
-            $config['db_pass'],
-            $config['db_name']
-        );
-
-        // if connexion error -> display error message
-        if ($this->connection->connect_error) {
-            die("Erreur de connexion MySQLi: " . $this->connection->connect_error);
+        try {
+            $this->connection = new \PDO ('mysql:host=mysql-devweb-iutaix.alwaysdata.net;dbname=devweb-iutaix_programation_web;charset=utf8','429892','^E&I8KFKD%mF7k');
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
+            echo "Connexion réussie !";
+        }catch (\PDOexception $e){
+            die("Echec de la connexion" . $e->getMessage());
         }
-    }
+    } 
 
     // Get database instance
     public static function getInstance() {

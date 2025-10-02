@@ -72,14 +72,14 @@ class ForgottenPasswordController
             $mail->SMTPSecure = $this->config['smtp_secure'];
 
             // Sender and recipient
-            $mail->setFrom($this->config['smtp_user'], 'PDW');
+            $mail->setFrom($this->config['smtp_user'], 'MMNotes');
             $mail->addAddress($emailDestinataire);
 
             // Email content
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Réinitialisation de votre mot de passe';
-            $mail->Body = '<p>Bonjour,</p><p>Suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><p><strong>Code : ' . $code . '</strong></p><p>L\'équipe de PDW vous remercie.</p>';
+            $mail->Body = '<p>Bonjour,</p><p>Suite à votre demande sur notre site, veuillez retrouver ci-dessous votre code afin de réinitialiser votre mot de passe.</p><p><strong>Code : ' . $code . '</strong></p><p>L\'équipe de MMNotes vous remercie.</p>';
             $mail->AltBody = 'Bonjour ! Code de réinitialisation : ' . $code;
 
             // Send email

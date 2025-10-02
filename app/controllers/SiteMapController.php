@@ -1,7 +1,7 @@
 <?php
 namespace controllers;
 
-class SitemapController {
+class SiteMapController {
 
     // Array to store the different pages
     private $pages = [];
@@ -20,8 +20,8 @@ class SitemapController {
             // Sets $fileName relative to the controller name
             $filename = basename($file, '.php');
 
-            // Ignore SitemapController
-            if ($filename === 'SitemapController') {
+            // Ignore SiteMapController
+            if ($filename === 'SiteMapController') {
                 continue;
             }
 

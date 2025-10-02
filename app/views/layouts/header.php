@@ -11,7 +11,7 @@
 <body>
     <header>
         <nav id="navbar">
-            <p id="navTitle">MMNotes</p>
+            <a id="navTitle" href="/index.php?url=home/index">MMNotes</a>
             <ul>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=home/index">Accueil</a></li>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=sitemap/index">Plan du site</a></li>

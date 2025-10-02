@@ -74,10 +74,15 @@ class UpdatePasswordController
 
         // Update the password in the database
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("UPDATE users SET PASSWORD = ? WHERE EMAIL = ?");
-        $stmt->bind_param("ss", $hash, $email);
+        //$stmt = $db->prepare("UPDATE users SET PASSWORD = ? WHERE EMAIL = ?");
+        //$stmt->bind_param("ss", $hash, $email);
 
-        if ($stmt->execute()) {
+
+        $query = $db->prepare("UPDATE users SET PASSWORD = :password WHERE EMAIL = :email");
+        $query->bindParam(":password",$hash,\PDO::PARAM_STR);
+        $query->bindParam(":email",$email,\PDO::PARAM_STR);
+
+        if ($query->execute()) {
             // Remove unnecessary SESSION variables
             unset(
                 $_SESSION['reset_code'],

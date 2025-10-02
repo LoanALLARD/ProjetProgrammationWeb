@@ -88,8 +88,9 @@ class RegisterController
                 echo "Inscription réussie !";
                 // Automatic user login
                  session_start();
-                 $_SESSION['user_id'] = $db->insert_id;
+                 $_SESSION['user_id'] = session_id();
                  $_SESSION['identifiant'] = $identifiant;
+                header("Location: /index.php?url=home/index");
             } else {
                 echo "Erreur lors de l'inscription.";
             }

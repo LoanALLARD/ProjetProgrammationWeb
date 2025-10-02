@@ -4,11 +4,12 @@ namespace core;
 
 class Router {
 
-    // Table de correspondance pour les cas spéciaux
+    // Special cases
     private array $controllerMap = [
         'forgottenpassword' => 'ForgottenPassword',
         'updatepassword' => 'UpdatePassword',
-        // Ajoutez ici d'autres contrôleurs multi-mots si nécessaire
+        'resetpassword' => 'ResetPassword',
+        'sitemap' => 'SiteMap',
     ];
 
     public function run() {
@@ -34,17 +35,17 @@ class Router {
     private function toPascalCase($string) {
         $lowerString = strtolower($string);
 
-        // Vérifier si c'est dans la table de correspondance
+        // Check if is in special cases
         if (isset($this->controllerMap[$lowerString])) {
             return $this->controllerMap[$lowerString];
         }
 
-        // Si la chaîne contient déjà des majuscules, on la garde
+        // If the string already contains capital letters, keep them
         if (preg_match('/[A-Z]/', $string)) {
             return ucfirst($string);
         }
 
-        // Sinon, traiter les séparateurs
+        // Otherwise, treat separators
         $string = str_replace(['-', '_'], ' ', $lowerString);
         $string = ucwords($string);
         return str_replace(' ', '', $string);

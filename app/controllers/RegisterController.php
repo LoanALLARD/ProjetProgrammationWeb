@@ -87,10 +87,10 @@ class RegisterController
             if ($query->execute()) {
                 echo "Inscription réussie !";
                 // Automatic user login
-                 session_start();
-                 $_SESSION['user_id'] = session_id();
-                 $_SESSION['identifiant'] = $identifiant;
-                header("Location: /index.php?url=home/index");
+                session_start();
+                $_SESSION['user_id'] = session_id();
+                $_SESSION['identifiant'] = $identifiant;
+                header("Location: /index.php?url=register/index");
             } else {
                 echo "Erreur lors de l'inscription.";
             }

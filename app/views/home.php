@@ -1,7 +1,5 @@
-<?php 
-namespace controllers;
+<?php
 require __DIR__ . '/layouts/header.php'; 
-
 ?>
 
 <?php if (!empty($notes)): ?>
@@ -11,7 +9,7 @@ require __DIR__ . '/layouts/header.php';
         <hr>
     <?php endforeach; ?>
 <?php else: ?>
-    <p>vous n'avez pas de note.</p>
+    <p>Vous n'avez pas de note.</p>
 <?php endif; ?>
 
-<?php require __DIR__ . '/layouts/footer.php' ?>
+<?php require __DIR__ . '/layouts/footer.php'; ?>

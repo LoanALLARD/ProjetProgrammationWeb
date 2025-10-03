@@ -12,9 +12,7 @@ class LoginController
     }
 
     public function login() {
-        session_start();
         try {
-            // get instance od the database
             $db = Database::getInstance()->getConnection();
             $identifiant = trim($_POST["identifiant"]);
             $password = $_POST["password"];
@@ -24,9 +22,8 @@ class LoginController
             $query->execute();
             $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-
-            // Check the validity of the information
-            if ($user =! null && password_verify($password, $user['PASSWORD'])) {
+            if ($user !== null && password_verify($password, $user['PASSWORD'])) {
+                session_start();
                 $_SESSION['user_id'] = $user['ID'];
                 $_SESSION['identifiant'] = $user['IDENTIFIANT'];
                 $_SESSION['success'] = "Connexion réussie !";

@@ -85,10 +85,11 @@ class RegisterController
             $query->bindParam(":inscription_date", $inscription_date, \PDO::PARAM_STR);
 
             if ($query->execute()) {
-                echo "Inscription réussie !";
+                //echo "Inscription réussie !";
                 // Automatic user login
                 session_start();
                 $_SESSION['user_id'] = session_id();
+                $_SESSION['toto'] = session_id();
                 $_SESSION['identifiant'] = $identifiant;
                 header("Location: /index.php?url=home/index");
             } else {

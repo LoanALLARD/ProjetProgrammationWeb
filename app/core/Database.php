@@ -11,7 +11,7 @@ class Database {
         try {
             $this->connection = new \PDO ('mysql:host=mysql-mmnotes.alwaysdata.net;dbname=mmnotes_programation_web;charset=utf8','mmnotes','^E&I8KFKD%mF7k');
             $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
-            echo "Connexion réussie !";
+            //echo "Connexion réussie !";
         }catch (\PDOexception $e){
             die("Echec de la connexion" . $e->getMessage());
         }

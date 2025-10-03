@@ -12,7 +12,6 @@ class LoginController
     }
 
     public function login() {
-        // Enlever session_start() d'ici, il est déjà dans index.php
         try {
             $db = Database::getInstance()->getConnection();
             $identifiant = trim($_POST["identifiant"]);
@@ -23,7 +22,6 @@ class LoginController
             $query->execute();
             $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-            // CORRECTION ICI : !== au lieu de =!
             if ($user !== null && password_verify($password, $user['PASSWORD'])) {
                 $_SESSION['user_id'] = $user['ID'];
                 $_SESSION['identifiant'] = $user['IDENTIFIANT'];

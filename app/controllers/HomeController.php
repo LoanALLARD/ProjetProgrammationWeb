@@ -21,7 +21,6 @@ class HomeController
             $user_id = $_SESSION['user_id'];
             $db = Database::getInstance()->getConnection();
 
-            // Vérifier que la note appartient bien à l'utilisateur
             $query = $db->prepare('SELECT TITRE, CONTENU FROM NOTES WHERE ID = :note_id AND USER_ID = :user_id');
             $query->bindParam(':note_id', $note_id, \PDO::PARAM_INT);
             $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
@@ -38,7 +37,7 @@ class HomeController
 
     public function addNote() {
         if(!empty($_SESSION['user_id']) && !empty($_POST['titre']) && !empty($_POST['contenu'])) {
-            $user_id = $_SESSION['user_id']; // Utilisez user_id (l'ID numérique)
+            $user_id = $_SESSION['user_id'];
             $titre = $_POST['titre'];
             $contenu = $_POST['contenu'];
             $inscription_date = date("Y-m-d");
@@ -56,6 +55,29 @@ class HomeController
             exit;
         } else {
             echo "Erreur : vous devez être connecté et remplir tous les champs.";
+        }
+    }
+
+    public function modifyNote() {
+
+    }
+
+    public function getNote() {
+        if(!empty($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            $db = Database::getInstance()->getConnection();
+
+            $query = $db->prepare('SELECT titre, contenu FROM notes WHERE USER_ID = :user_id');
+            $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
+            $query->execute();
+
+            $notes = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach($notes as $note) {
+                echo "<h3>" . htmlspecialchars($note['titre']) . "</h3>";
+                echo "<p>" . nl2br(htmlspecialchars($note['contenu'])) . "</p>";
+                echo "<hr>";
+            }
         }
     }
 

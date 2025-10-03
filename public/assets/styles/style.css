@@ -15,8 +15,6 @@
     font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
-
-
 html, body {
     height: 100%;
     margin: 0;
@@ -27,7 +25,6 @@ html, body {
     text-align: center;
 }
 
-
 .page-wrapper {
     display: flex;
     flex-direction: column;
@@ -37,9 +34,6 @@ html, body {
 .content {
     flex: 1;
 }
-
-
-
 
 .pageTitle {
     text-align: center;

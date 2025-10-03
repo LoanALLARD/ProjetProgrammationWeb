@@ -19,7 +19,7 @@ class RegisterController
     public function index() {
         $pageTitle = "Inscription";
 
-        // Varibales for display messages in the view
+        // Variables for display messages in the view
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
 

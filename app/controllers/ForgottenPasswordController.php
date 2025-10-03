@@ -42,13 +42,10 @@ class ForgottenPasswordController
         $emailDestinataire = trim($_POST['email']);
         $db = Database::getInstance()->getConnection();
 
-        // Check if the email exists in the DB
-        $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE EMAIL = ?");
-        $checkStmt->bind_param("s", $emailDestinataire);
-        $checkStmt->execute();
-        $checkResult = $checkStmt->get_result();
-        $count = $checkResult->fetch_row()[0];
-        $checkStmt->close();
+        $checkQuery = $db->prepare('SELECT * FROM users where email = :email');
+        $checkQuery->bindParam(":email", $emailDestinataire, \PDO::PARAM_STR);
+        $checkQuery->execute();
+        $count = $checkQuery->fetchColumn(); // recover the first line of the query
 
         if ($count === 0) {
             $_SESSION['error_message'] = "L'adresse e-mail n'existe pas !";

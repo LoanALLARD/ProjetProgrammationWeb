@@ -53,39 +53,54 @@ class RegisterController
 
             $db = Database::getInstance()->getConnection();
 
-            $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE IDENTIFIANT = ? OR EMAIL = ?");
-            $checkStmt->bind_param("ss", $identifiant, $email);
-            $checkStmt->execute();
-            $checkResult = $checkStmt->get_result();
-            $count = $checkResult->fetch_row()[0];
+            // Check whether the username or email address already exists
+            // $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE IDENTIFIANT = ? OR EMAIL = ?");
+            // $checkStmt->bind_param("ss", $identifiant, $email);
+            // $checkStmt->execute();
+            // $checkResult = $checkStmt->get_result();
+            // $count = $checkResult->fetch_row()[0];
+
+
+            $checkQuery = $db->prepare('SELECT COUNT(*) FROM users WHERE IDENTIFIANT = :identifiant OR EMAIL = :email');
+            $checkQuery->bindParam(":email", $emailDestinataire, \PDO::PARAM_STR);
+            $checkQuery->bindParam(":identifiant", $identifiant, \PDO::PARAM_STR);
+            $checkQuery->execute();
+            $count = $checkQuery->fetchColumn(); // recover the first line of the query
 
             if ($count > 0) {
-                $_SESSION['error'] = "Cet identifiant ou cet email est déjà utilisé !";
-                $checkStmt->close();
-                header("Location: /index.php?url=register/index");
-                exit;
+                echo "Cet identifiant ou cet email est déjà utilisé !";
+                $checkQuery = null ;
+                return;
             }
-            $checkStmt->close();
+            $checkQuery = null;
 
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $inscription_date = date("Y-m-d H:i:s");
 
-            $stmt = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $identifiant, $email, $telephone, $hash, $inscription_date);
+            // Inserting the new user into the database
+            
+            //$stmt = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (?, ?, ?, ?, ?)");
+            //$stmt->bind_param("sssss", $identifiant, $email, $telephone, $hash, $inscription_date);
 
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "Inscription réussie !";
-                $_SESSION['user_id'] = $db->insert_id;
-                $_SESSION['identifiant'] = $identifiant;
-                header("Location: /index.php?url=register/index");
-                exit;
+            $query = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (:identifiant, :email, :telephone, :password, :inscription_date)");
+            $query->bindParam(":identifiant", $identifiant, \PDO::PARAM_STR);
+            $query->bindParam(":email", $email, \PDO::PARAM_STR);
+            $query->bindParam(":telephone", $telephone, \PDO::PARAM_STR);
+            $query->bindParam(":password", $hash, \PDO::PARAM_STR);
+            $query->bindParam(":inscription_date", $inscription_date, \PDO::PARAM_STR);
+
+            if ($query->execute()) {
+                echo "Inscription réussie !";
+                // Automatic user login
+                 session_start();
+                 $_SESSION['user_id'] = session_id();
+                 $_SESSION['identifiant'] = $identifiant;
+                header("Location: /index.php?url=home/index");
             } else {
-                $_SESSION['error'] = "Erreur lors de l'inscription : " . $stmt->error;
-                header("Location: /index.php?url=register/index");
-                exit;
+                echo "Erreur lors de l'inscription.";
             }
 
-            $stmt->close();
+            $query = null;
 
         } catch (Exception $e) {
             $_SESSION['error'] = "Erreur lors de l'inscription : " . $e->getMessage();

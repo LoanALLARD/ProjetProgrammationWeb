@@ -19,12 +19,11 @@ class LoginController
             $identifiant = trim($_POST["identifiant"]);
             $password = $_POST["password"];
 
-            // Retrieves information from the database
-            $stmt = $db->prepare("SELECT * FROM users WHERE IDENTIFIANT = ?");
-            $stmt->bind_param("s", $identifiant);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $user = $result->fetch_assoc();
+            $query = $db->prepare('SELECT * FROM users where identifiant = :identifiant');
+            $query->bindParam(":identifiant", $identifiant, \PDO::PARAM_STR);
+            $query->execute();
+            $user = $query->fetch(\PDO::FETCH_ASSOC);
+
 
             // Check the validity of the information
             if ($user =! null && password_verify($password, $user['PASSWORD'])) {
@@ -36,7 +35,7 @@ class LoginController
             } else {
                 $_SESSION['error'] = "Identifiant ou mot de passe incorrect !";
                 header("Location: /index.php?url=login/index");
-                exit;
+                return;
             }
         } catch (\Exception $e) {
             $_SESSION['error'] = "Erreur lors de la connexion : " . $e->getMessage();

@@ -2,7 +2,7 @@
 
 <h2>Mes notes</h2>
 <button onclick="window.location.href='index.php?url=home/showAddForm&action=add'">Ajouter une note</button>
-
+<button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer une note</button>
 <?php if (!empty($showForm)) : ?>
     <form method="POST" action="index.php?url=home/addNote">
         <input type="text" name="titre" placeholder="Titre de la note" required>
@@ -10,6 +10,6 @@
         <button type="submit">Enregistrer</button>
     </form>
 <?php endif; ?>
-<button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer une note</button>
+
 <p>Voici ma page d'accueil</p>
 <?php require __DIR__ . '/layouts/footer.php' ?>

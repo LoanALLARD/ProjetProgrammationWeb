@@ -15,10 +15,24 @@
     font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
-body {
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     background-color: var(--periwinkle);
     color: var(--rich-black);
     line-height: 1.5;
+    text-align: center;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+.content {
+    flex: 1;
 }
 
 .pageTitle {
@@ -120,6 +134,18 @@ form input[type="submit"]:hover {
     transform: translateY(-1px);
 }
 
+button{
+    padding: 10px 16px;
+    background-color: var(--jordy-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
 form a {
     color: var(--jordy-blue);
     text-decoration: none;
@@ -135,6 +161,13 @@ p {
     text-align: center;
     color: var(--rich-black);
     font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: var(--rich-black);
     margin-top: 15px;
     margin-bottom: 8px;
 }
@@ -178,6 +211,23 @@ footer {
     background-color: var(--jordy-blue);
     border-top: 1px solid var(--air-superiority-blue);
     padding: 16px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+footer a{
+    text-decoration: none;
+    color: var(--white);
+    margin-left: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+footer a:hover {
+    text-decoration: underline; 
 }
 
 #footerText {

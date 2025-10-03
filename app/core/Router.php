@@ -10,6 +10,7 @@ class Router {
         'updatepassword' => 'UpdatePassword',
         'resetpassword' => 'ResetPassword',
         'sitemap' => 'SiteMap',
+        'mentionslegales' => 'MentionsLegales',
     ];
 
     public function run() {

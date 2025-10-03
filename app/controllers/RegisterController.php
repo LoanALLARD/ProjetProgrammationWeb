@@ -8,7 +8,9 @@ use core\Database;
 class RegisterController
 {
 
+    // Constructor
     public function __construct() {
+        // if the session is not defined, create one
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -17,11 +19,14 @@ class RegisterController
     public function index() {
         $pageTitle = "Inscription";
 
+        // Varibales for display messages in the view
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
 
+        // Unset variables to free up space
         unset($_SESSION['success_message'], $_SESSION['error_message']);
 
+        // Call view
         require __DIR__ . '/../views/register.php';
     }
 
@@ -92,7 +97,7 @@ class RegisterController
                 session_start();
                 $_SESSION['user_id'] = session_id();
                 $_SESSION['identifiant'] = $identifiant;
-                header("Location: /index.php?url=register/index");
+                header("Location: /index.php?url=home/index");
             } else {
                 echo "Erreur lors de l'inscription.";
             }

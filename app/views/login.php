@@ -2,7 +2,7 @@
 
     <p class="pageTitle">Connexion</p>
     <form method="POST" action="/index.php?url=login/login">
-        <?php //changer l'affichage avec les details du compte plutot 
+        <?php
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }

@@ -11,5 +11,6 @@
     </form>
 <?php endif; ?>
 <button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer une note</button>
+<button onclick="window.location.href='index.php?url=home/getNote'">Afficher les notes</button>
 <p>Voici ma page d'accueil</p>
 <?php require __DIR__ . '/layouts/footer.php' ?>

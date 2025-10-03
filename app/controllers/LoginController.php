@@ -35,7 +35,7 @@ class LoginController
             } else {
                 $_SESSION['error'] = "Identifiant ou mot de passe incorrect !";
                 header("Location: /index.php?url=login/index");
-                return;
+                exit;
             }
         } catch (\Exception $e) {
             $_SESSION['error'] = "Erreur lors de la connexion : " . $e->getMessage();

@@ -47,19 +47,11 @@ class RegisterController
 
             $db = Database::getInstance()->getConnection();
 
-            // Check whether the username or email address already exists
-            // $checkStmt = $db->prepare("SELECT COUNT(*) FROM users WHERE IDENTIFIANT = ? OR EMAIL = ?");
-            // $checkStmt->bind_param("ss", $identifiant, $email);
-            // $checkStmt->execute();
-            // $checkResult = $checkStmt->get_result();
-            // $count = $checkResult->fetch_row()[0];
-
-
             $checkQuery = $db->prepare('SELECT COUNT(*) FROM users WHERE IDENTIFIANT = :identifiant OR EMAIL = :email');
             $checkQuery->bindParam(":email", $emailDestinataire, \PDO::PARAM_STR);
             $checkQuery->bindParam(":identifiant", $identifiant, \PDO::PARAM_STR);
             $checkQuery->execute();
-            $count = $checkQuery->fetchColumn(); // recover the first line of the query
+            $count = $checkQuery->fetchColumn();
 
             if ($count > 0) {
                 echo "Cet identifiant ou cet email est déjà utilisé !";
@@ -73,10 +65,6 @@ class RegisterController
             $inscription_date = date("Y-m-d H:i:s");
 
             // Inserting the new user into the database
-            
-            //$stmt = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (?, ?, ?, ?, ?)");
-            //$stmt->bind_param("sssss", $identifiant, $email, $telephone, $hash, $inscription_date);
-
             $query = $db->prepare("INSERT INTO users (IDENTIFIANT, EMAIL, TELEPHONE, PASSWORD, INSCRIPTION_DATE) VALUES (:identifiant, :email, :telephone, :password, :inscription_date)");
             $query->bindParam(":identifiant", $identifiant, \PDO::PARAM_STR);
             $query->bindParam(":email", $email, \PDO::PARAM_STR);

@@ -4,9 +4,7 @@
 
         <main class="content">
             <h2>Mes notes</h2>
-            <button onclick="window.location.href='index.php?url=home/showAddForm&action=add'">Ajouter une note</button>
-            <button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer une note</button>
-            <button onclick="window.location.href='index.php?url=home/modifyNote'">Modifier une note</button>
+            <button onclick="window.location.href='index.php?url=home/addNote'">Ajouter une note</button>
             <?php if (!empty($showForm)) : ?>
                 <form method="POST" action="index.php?url=home/addNote">
                     <input type="text" name="titre" placeholder="Titre de la note" required>
@@ -21,6 +19,8 @@
                         <article class="note">
                             <h3><?= htmlspecialchars($note['titre']) ?></h3>
                             <p><?= nl2br(htmlspecialchars($note['contenu'])) ?></p>
+                            <button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer <lax></lax> note</button>
+                            <button onclick="window.location.href='index.php?url=home/modifyNote'">Modifier la note</button>
                         </article>
                         <hr>
                     <?php endforeach; ?>

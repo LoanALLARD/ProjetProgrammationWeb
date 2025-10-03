@@ -52,7 +52,7 @@ class HomeController
     }
 
     public function modifyNote() {
-    
+
     }
 
     public function deleteNote(){

@@ -27,12 +27,6 @@ class RegisterController
             $password = $_POST['password'] ?? '';
             $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
 
-            /*if (empty($identifiant) || empty($email) || empty($password)) {
-                $_SESSION['error'] = "Identifiant, email et mot de passe sont requis !";
-                header("Location: /index.php?url=register/index");
-                exit;
-            }*/
-
             if ($password !== $passwordConfirmation) {
                 $_SESSION['error'] = "Les mots de passe ne correspondent pas !";
                 header("Location: /index.php?url=register/index");

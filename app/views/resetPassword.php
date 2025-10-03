@@ -4,13 +4,13 @@
     <p class="pageTitle">Validation du code</p>
 
     <?php if (isset($errorMessage)): ?>
-        <div style="color:red; text-align: center; margin: 10px 0;">
+        <div class="alert alert-error">
             <?= htmlspecialchars($errorMessage) ?>
         </div>
     <?php endif; ?>
 
     <?php if (isset($successMessage)): ?>
-        <div style="color:green; text-align: center; margin: 10px 0;">
+        <div class="alert alert-success">
             <?= htmlspecialchars($successMessage) ?>
         </div>
     <?php endif; ?>

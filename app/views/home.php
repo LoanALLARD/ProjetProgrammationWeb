@@ -6,7 +6,7 @@
             <h2>Mes notes</h2>
             <button onclick="window.location.href='index.php?url=home/showAddForm&action=add'">Ajouter une note</button>
             <button onclick="window.location.href='index.php?url=home/deleteNote'">Supprimer une note</button>
-            <button onclick="window.location.href='index.php?url=home/getNote'">Afficher les notes</button>
+            <button onclick="window.location.href='index.php?url=home/modifyNote'">Modifier une note</button>
             <?php if (!empty($showForm)) : ?>
                 <form method="POST" action="index.php?url=home/addNote">
                     <input type="text" name="titre" placeholder="Titre de la note" required>
@@ -15,7 +15,19 @@
                 </form>
             <?php endif; ?>
 
-            <p>Voici ma page d'accueil</p>
+            <div class="notes-container">
+                <?php if (!empty($notes) && is_array($notes)) : ?>
+                    <?php foreach($notes as $note) : ?>
+                        <article class="note">
+                            <h3><?= htmlspecialchars($note['titre']) ?></h3>
+                            <p><?= nl2br(htmlspecialchars($note['contenu'])) ?></p>
+                        </article>
+                        <hr>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p>Aucune note à afficher.</p>
+                <?php endif; ?>
+            </div>
         </main>
 
         <?php require __DIR__ . '/layouts/footer.php' ?>

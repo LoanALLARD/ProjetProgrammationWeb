@@ -12,27 +12,20 @@ class HomeController
         //if(empty($_SESSION['email']))
            //require __DIR__.'/../views/login.php';
         //else{
-        require __DIR__ . '/../views/home.php';
         //}
-    }
 
-    protected function getNoteById($note_id){
-        if(!empty($_SESSION['user_id'])){
+        if(!empty($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
             $db = Database::getInstance()->getConnection();
 
-            $query = $db->prepare('SELECT TITRE, CONTENU FROM NOTES WHERE ID = :note_id AND USER_ID = :user_id');
-            $query->bindParam(':note_id', $note_id, \PDO::PARAM_INT);
+            $query = $db->prepare('SELECT titre, contenu FROM notes WHERE USER_ID = :user_id');
             $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
             $query->execute();
 
-            $note = $query->fetch(\PDO::FETCH_ASSOC);
-
-            if($note) {
-                echo "<h3>" . htmlspecialchars($note['TITRE']) . "</h3>";
-                echo "<p>" . nl2br(htmlspecialchars($note['CONTENU'])) . "</p>";
-            }
+            $notes = $query->fetchAll(\PDO::FETCH_ASSOC);
         }
+
+        require __DIR__ . '/../views/home.php';
     }
 
     public function addNote() {
@@ -44,7 +37,7 @@ class HomeController
 
             $db = Database::getInstance()->getConnection();
             $query = $db->prepare('INSERT INTO notes (USER_ID, TITRE, CONTENU, DATE_CREATION) VALUES (:user_id,:titre,:contenu,:inscription_date)');
-            $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT); // PARAM_INT car c'est un ID
+            $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
             $query->bindParam(':titre', $titre, \PDO::PARAM_STR);
             $query->bindParam(':contenu', $contenu, \PDO::PARAM_STR);
             $query->bindParam(':inscription_date', $inscription_date, \PDO::PARAM_STR);
@@ -59,34 +52,7 @@ class HomeController
     }
 
     public function modifyNote() {
-
-    }
-
-    public function getNote() {
-        if(!empty($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
-            $db = Database::getInstance()->getConnection();
-
-            $query = $db->prepare('SELECT titre, contenu FROM notes WHERE USER_ID = :user_id');
-            $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
-            $query->execute();
-
-            $notes = $query->fetchAll(\PDO::FETCH_ASSOC);
-
-            foreach($notes as $note) {
-                echo "<h3>" . htmlspecialchars($note['titre']) . "</h3>";
-                echo "<p>" . nl2br(htmlspecialchars($note['contenu'])) . "</p>";
-                echo "<hr>";
-            }
-        }
-    }
-
-    public function showAddForm() {
-        $showForm = false;
-        if (isset($_GET['action']) && $_GET['action'] === 'add') {
-            $showForm = true;
-        }
-        require __DIR__ . '/../views/home.php';
+    
     }
 
     public function deleteNote(){

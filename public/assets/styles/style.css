@@ -15,11 +15,30 @@
     font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
-body {
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     background-color: var(--periwinkle);
     color: var(--rich-black);
     line-height: 1.5;
 }
+
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+.content {
+    flex: 1;
+}
+
+
+
 
 .pageTitle {
     text-align: center;

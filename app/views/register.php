@@ -1,25 +1,34 @@
-<?php require __DIR__ . '/layouts/header.php'; ?>
+<body>
+    <div class="page-wrapper">
+        <?php require __DIR__ . '/layouts/header.php'; ?>
 
-    <p class="pageTitle">Inscription</p>
-    <form method="POST" action="/index.php?url=register/register">
-        <p>Identifiant</p>
-        <input type="text" name="identifiant" required>
+        <main class="content" style="text-align:center; padding: 20px;">
+            <p class="pageTitle">Inscription</p>
 
-        <p>Adresse mail</p>
-        <input type="email" name="email" required>
+            <form method="POST" action="/index.php?url=register/register">
+                <p>Identifiant</p>
+                <input type="text" name="identifiant" required>
 
-        <p>Téléphone</p>
-        <input type="tel" name="telephone">
+                <p>Adresse mail</p>
+                <input type="email" name="email" required>
 
-        <p>Mot de passe</p>
-        <input type="password" name="password" required>
+                <p>Téléphone</p>
+                <input type="tel" name="telephone">
 
-        <p>Confirmation du Mot de passe</p>
-        <input type="password" name="passwordConfirmation" required>
+                <p>Mot de passe</p>
+                <input type="password" name="password" required>
 
-        <input type="submit" value="S'inscrire">
+                <p>Confirmation du Mot de passe</p>
+                <input type="password" name="passwordConfirmation" required>
 
-        <a href="/index.php?url=login/index">Déjà un compte ?</a>
-    </form>
+                <br><br>
+                <input type="submit" value="S'inscrire">
 
-<?php require __DIR__ . '/layouts/footer.php' ?>
+                <br><br>
+                <a href="/index.php?url=login/index">Déjà un compte ?</a>
+            </form>
+        </main>
+
+        <?php require __DIR__ . '/layouts/footer.php'; ?>
+    </div>
+</body>

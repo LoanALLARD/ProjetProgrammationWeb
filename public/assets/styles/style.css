@@ -119,6 +119,18 @@ form input[type="submit"]:hover {
     transform: translateY(-1px);
 }
 
+button{
+    padding: 10px 16px;
+    background-color: var(--jordy-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
 form a {
     color: var(--jordy-blue);
     text-decoration: none;

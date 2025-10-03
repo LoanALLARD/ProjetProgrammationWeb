@@ -3,6 +3,7 @@
 <main class="content">
     <p class="pageTitle">Mot de passe oublié</p>
 
+    <!-- Error and success messages -->
     <?php if (isset($errorMessage)): ?>
         <div class="alert alert-error">
             <?= htmlspecialchars($errorMessage) ?>

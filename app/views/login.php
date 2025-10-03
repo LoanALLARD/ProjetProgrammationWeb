@@ -4,19 +4,19 @@
     <p class="pageTitle">Connexion</p>
 
     <form method="POST" action="/index.php?url=login/login">
-        <?php
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            if (isset($_SESSION['error'])) {
-                echo '<div style="color:red; text-align: center; margin: 10px 0;">' . htmlspecialchars($_SESSION['error']) . '</div>';
-                unset($_SESSION['error']);
-            }
-            if (isset($_SESSION['success'])) {
-                echo '<div style="color:green; text-align: center; margin: 10px 0;">' . htmlspecialchars($_SESSION['success']) . '</div>';
-                unset($_SESSION['success']);
-            }
-        ?>
+
+        <!-- Error and success messages -->
+        <?php if (isset($errorMessage)): ?>
+            <div class="alert alert-error">
+                <?= htmlspecialchars($errorMessage) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($successMessage)): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($successMessage) ?>
+            </div>
+        <?php endif; ?>
 
         <p>Identifiant</p>
         <input type="text" name="identifiant" required>

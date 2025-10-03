@@ -3,6 +3,7 @@
 <main class="content" style="text-align:center; padding: 20px;">
     <p class="pageTitle">Validation du code</p>
 
+    <!-- Error and success messages -->
     <?php if (isset($errorMessage)): ?>
         <div class="alert alert-error">
             <?= htmlspecialchars($errorMessage) ?>

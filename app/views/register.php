@@ -4,16 +4,20 @@
     <p class="pageTitle">Inscription</p>
 
     <form method="POST" action="/index.php?url=register/register">
-        <?php
-        if (isset($_SESSION['error'])) {
-            echo '<div style="color:red; text-align: center;">' . htmlspecialchars($_SESSION['error']) . '</div>';
-            unset($_SESSION['error']);
-        }
-        if (isset($_SESSION['success'])) {
-            echo '<div style="color:green; text-align: center;">' . htmlspecialchars($_SESSION['success']) . '</div>';
-            unset($_SESSION['success']);
-        }
-        ?>
+
+        <!-- Error and success messages -->
+        <?php if (isset($errorMessage)): ?>
+            <div class="alert alert-error">
+                <?= htmlspecialchars($errorMessage) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($successMessage)): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($successMessage) ?>
+            </div>
+        <?php endif; ?>
+
         <p>Identifiant</p>
         <input type="text" name="identifiant" required placeholder="VotreIdentifiant">
 

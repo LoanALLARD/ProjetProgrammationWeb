@@ -6,7 +6,7 @@
             <button class="btn-primary" onclick="window.location.href='index.php?url=home/showAddForm&action=add'">Ajouter une note</button>
         </div>
 
-        <!-- Messages d'erreur et de succès -->
+        <!-- Error and success messages -->
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-error">
                 <?= htmlspecialchars($_SESSION['error']) ?>
@@ -21,7 +21,7 @@
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
 
-        <!-- Formulaire d'ajout -->
+        <!-- Add form -->
         <?php if (!empty($showForm)) : ?>
             <form method="POST" action="index.php?url=home/addNote" class="note-form">
                 <p>Nouvelle note</p>
@@ -34,7 +34,7 @@
             </form>
         <?php endif; ?>
 
-        <!-- Formulaire de modification -->
+        <!-- Change form -->
         <?php if (!empty($showEditForm) && !empty($noteToEdit)) : ?>
             <form method="POST" action="index.php?url=home/modifyNote" class="note-form">
                 <p>Modifier la note</p>
@@ -48,6 +48,7 @@
             </form>
         <?php endif; ?>
 
+        <!-- Delete button -->
         <div class="notes-container">
             <?php if (!empty($notes) && is_array($notes)) : ?>
                 <?php foreach($notes as $note) : ?>

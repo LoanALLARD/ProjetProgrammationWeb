@@ -3,7 +3,9 @@
     <p class="pageTitle">Connexion</p>
     <form method="POST" action="/index.php?url=login/login">
         <?php //changer l'affichage avec les details du compte plutot 
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             if (isset($_SESSION['error'])) {
                 echo '<div style="color:red; text-align: center;">' . htmlspecialchars($_SESSION['error']) . '</div>';
                 unset($_SESSION['error']);

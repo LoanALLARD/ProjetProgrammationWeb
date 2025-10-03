@@ -1,30 +1,26 @@
-<body>
-    <div class="page-wrapper">
-        <?php require __DIR__ . '/layouts/header.php'; ?>
+<?php require __DIR__ . '/layouts/header.php'; ?>
 
-        <main class="content" style="text-align:center; padding: 20px;">
-            <p class="pageTitle">Validation du code</p>
+<main class="content" style="text-align:center; padding: 20px;">
+    <p class="pageTitle">Validation du code</p>
 
-            <?php if (isset($errorMessage)): ?>
-                <div style="color:red; text-align: center; margin: 10px 0;">
-                    <?= htmlspecialchars($errorMessage) ?>
-                </div>
-            <?php endif; ?>
+    <?php if (isset($errorMessage)): ?>
+        <div style="color:red; text-align: center; margin: 10px 0;">
+            <?= htmlspecialchars($errorMessage) ?>
+        </div>
+    <?php endif; ?>
 
-            <?php if (isset($successMessage)): ?>
-                <div style="color:green; text-align: center; margin: 10px 0;">
-                    <?= htmlspecialchars($successMessage) ?>
-                </div>
-            <?php endif; ?>
+    <?php if (isset($successMessage)): ?>
+        <div style="color:green; text-align: center; margin: 10px 0;">
+            <?= htmlspecialchars($successMessage) ?>
+        </div>
+    <?php endif; ?>
 
-            <form method="POST" action="index.php?url=resetpassword/verificationCode">
-                <p>Veuillez saisir le code reçu par mail</p>
-                <input type="text" minlength="6" maxlength="6" required name="enteredCode" placeholder="123456">
-                <br><br>
-                <input type="submit" value="Valider le code">
-            </form>
-        </main>
+    <form method="POST" action="index.php?url=resetpassword/verificationCode">
+        <p>Veuillez saisir le code reçu par mail</p>
+        <input type="text" minlength="6" maxlength="6" required name="enteredCode" placeholder="123456">
+        <br><br>
+        <input type="submit" value="Valider le code">
+    </form>
+</main>
 
-        <?php require __DIR__ . '/layouts/footer.php'; ?>
-    </div>
-</body>
+<?php require __DIR__ . '/layouts/footer.php'; ?>

@@ -1,25 +1,19 @@
-<body>
-    <div class="page-wrapper">
-        <?php require __DIR__ . '/layouts/header.php'; ?>
+<?php require __DIR__ . '/layouts/header.php'; ?>
 
-        <main class="content" style="text-align:center; padding: 20px;">
-            <p class="pageTitle">Inscription</p>
+<main class="content">
+    <p class="pageTitle">Inscription</p>
 
-            <form method="POST" action="/index.php?url=register/register">
-                <p>Identifiant</p>
-                <input type="text" name="identifiant" required>
-                <p class="pageTitle">Inscription</p>
-                <form method="POST" action="/index.php?url=register/register">
-                <?php
-                if (isset($_SESSION['error'])) {
-                    echo '<div style="color:red; text-align: center;">' . htmlspecialchars($_SESSION['error']) . '</div>';
-                    unset($_SESSION['error']);
-                }
-                if (isset($_SESSION['success'])) {
-                    echo '<div style="color:green; text-align: center;">' . htmlspecialchars($_SESSION['success']) . '</div>';
-                    unset($_SESSION['success']);
-                }
-                ?>
+    <form method="POST" action="/index.php?url=register/register">
+        <?php
+        if (isset($_SESSION['error'])) {
+            echo '<div style="color:red; text-align: center;">' . htmlspecialchars($_SESSION['error']) . '</div>';
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo '<div style="color:green; text-align: center;">' . htmlspecialchars($_SESSION['success']) . '</div>';
+            unset($_SESSION['success']);
+        }
+        ?>
         <p>Identifiant</p>
         <input type="text" name="identifiant" required placeholder="VotreIdentifiant">
 
@@ -35,11 +29,9 @@
         <p>Confirmation du Mot de passe</p>
         <input type="password" name="passwordConfirmation" required  placeholder="**********">
 
-                <input type="submit" value="S'inscrire">
-                <a href="/index.php?url=login/index">Déjà un compte ?</a>
-            </form>
-        </main>
+        <input type="submit" value="S'inscrire">
+        <a href="/index.php?url=login/index">Déjà un compte ?</a>
+    </form>
+</main>
 
-        <?php require __DIR__ . '/layouts/footer.php'; ?>
-    </div>
-</body>
+<?php require __DIR__ . '/layouts/footer.php'; ?>

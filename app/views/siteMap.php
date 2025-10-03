@@ -1,24 +1,20 @@
-<body>
-    <div class="page-wrapper">
-        <?php require __DIR__ . '/layouts/header.php'; ?>
+<?php require __DIR__ . '/layouts/header.php'; ?>
 
-        <main class="content" style="padding: 20px;">
-            <div id="sitemapContainer">
-                <p class="pageTitle">Plan du site</p>
-                <ul id="sitemapList">
-                    <?php if (isset($pages)) {
-                        foreach ($pages as $page): ?>
-                            <li class="sitemapItem">
-                                <a class="sitemapLink" href="<?= $page['url']; ?>">
-                                    <?= htmlspecialchars($page['title']); ?>
-                                </a>
-                            </li>
-                        <?php endforeach;
-                    } ?>
-                </ul>
-            </div>
-        </main>
-
-        <?php require __DIR__ . '/layouts/footer.php'; ?>
+<main class="content">
+    <div id="sitemapContainer">
+        <p class="pageTitle">Plan du site</p>
+        <ul id="sitemapList">
+            <?php if (isset($pages)) {
+                foreach ($pages as $page): ?>
+                    <li class="sitemapItem">
+                        <a class="sitemapLink" href="<?= $page['url']; ?>">
+                            <?= htmlspecialchars($page['title']); ?>
+                        </a>
+                    </li>
+                <?php endforeach;
+            } ?>
+        </ul>
     </div>
-</body>
+</main>
+
+<?php require __DIR__ . '/layouts/footer.php'; ?>

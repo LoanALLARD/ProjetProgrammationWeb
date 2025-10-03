@@ -9,10 +9,9 @@ class Database {
         $config = require __DIR__ . '/../config/config.php';
 
         try {
-            //$this->connection = new \PDO ('mysql:host='config['db_host']';dbname='config['db_name']';charset=utf8',config['db_user'],config['db_pass']);
             $this->connection = new \PDO('mysql:host=' . $config['db_host'] . ';dbname=' . $config['db_name'] . ';charset=utf8', $config['db_user'], $config['db_pass']);
             $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
-        }catch (\PDOexception $e){
+        } catch (\PDOexception $e){
             die("Echec de la connexion" . $e->getMessage());
         }
     } 

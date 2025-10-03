@@ -24,6 +24,7 @@ html, body {
     background-color: var(--periwinkle);
     color: var(--rich-black);
     line-height: 1.5;
+    text-align: center;
 }
 
 
@@ -169,6 +170,13 @@ p {
     margin-bottom: 8px;
 }
 
+h1, h2, h3 {
+    text-align: center;
+    color: var(--rich-black);
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
 /* Site Map */
 
 #sitemapContainer {
@@ -208,6 +216,23 @@ footer {
     background-color: var(--jordy-blue);
     border-top: 1px solid var(--air-superiority-blue);
     padding: 16px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+footer a{
+    text-decoration: none;
+    color: var(--white);
+    margin-left: 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+footer a:hover {
+    text-decoration: underline; 
 }
 
 #footerText {

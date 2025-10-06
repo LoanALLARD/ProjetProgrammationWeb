@@ -56,4 +56,21 @@ class LoginController
             exit;
         }
     }
+
+    public function logout() {
+        try {
+            unset($_SESSION['user_id']);
+            unset($_SESSION['identifiant']);
+            unset($_SESSION['success_message']);
+            unset($_SESSION['error_message']);
+            session_unset();
+            session_destroy();
+
+            header("Location: /index.php?url=home/index");
+            exit();
+        }
+        catch (\Exception $e) {
+            $_SESSION['error_message'] = "Erreur lors de la déconnexion : " . $e->getMessage();
+        }
+    }
 }

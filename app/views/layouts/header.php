@@ -15,7 +15,12 @@
             <ul>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=home/index">Accueil</a></li>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=sitemap/index">Plan du site</a></li>
-                <li class="navElements"><a class="navElementsText" href="/index.php?url=login/index">Connexion</a></li>
+                <?php
+                if (isset($_SESSION['user_id'])) { ?>
+                    <li class="navElements"><a class="navElementsText" href="/index.php?url=login/logout">Déconnexion</a></li>
+                <?php } else { ?>
+                    <li class="navElements"><a class="navElementsText" href="/index.php?url=login/index">Connexion</a></li>
+                <?php } ?>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=register/index">S'inscrire</a></li>
             </ul>
         </nav>

@@ -12,6 +12,8 @@
     <header>
         <nav id="navbar">
             <a id="navTitle" href="/index.php?url=home/index">MMNotes</a>
+            <input type="checkbox" id="burger-toggle" />
+            <label for="burger-toggle" class="burger">☰</label>
             <ul>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=home/index">Accueil</a></li>
                 <li class="navElements"><a class="navElementsText" href="/index.php?url=sitemap/index">Plan du site</a></li>

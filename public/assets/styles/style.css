@@ -131,17 +131,6 @@ form input[type="submit"]:hover {
     transform: translateY(-1px);
 }
 
-/*button{*/
-/*    padding: 10px 16px;*/
-/*    background-color: var(--jordy-blue);*/
-/*    color: var(--white);*/
-/*    border: none;*/
-/*    border-radius: 6px;*/
-/*    font-size: 1rem;*/
-/*    font-weight: 600;*/
-/*    cursor: pointer;*/
-/*    transition: background-color 0.2s, transform 0.2s;*/
-/*}*/
 
 form a {
     color: var(--jordy-blue);
@@ -234,7 +223,6 @@ h1, h2, h3 {
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
-    /*ajout de boubou*/
     height: fit-content;
     align-self: center;
 }
@@ -356,7 +344,7 @@ h1, h2, h3 {
 
 .note-text {
     display: -webkit-box;
-    -webkit-line-clamp: 9; /* Tronque après 4 lignes */
+    -webkit-line-clamp: 9;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -459,7 +447,7 @@ h1, h2, h3 {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 25px; /* espace entre les notes */
+        gap: 25px;
         width: 95%;
         padding: 0 10px;
     }
@@ -480,7 +468,7 @@ h1, h2, h3 {
 
     .note-text {
         font-size: 0.95rem;
-        -webkit-line-clamp: 6; /* tronque moins sur mobile */
+        -webkit-line-clamp: 6;
     }
 
     .note-actions {
@@ -549,7 +537,6 @@ h1, h2, h3 {
 }
 
 @media (max-width: 480px) {
-    /* Plus petit écran : optimise la lisibilité */
     body {
         font-size: 0.95rem;
     }
@@ -583,7 +570,6 @@ h1, h2, h3 {
         color: var(--periwinkle);
     }
 
-    /* On cache le menu par défaut */
     #navbar ul {
         display: none;
         flex-direction: column;
@@ -598,12 +584,12 @@ h1, h2, h3 {
         animation: slideDown 0.3s ease;
     }
 
-    /* Quand la case est cochée → on affiche le menu */
+
     #burger-toggle:checked + .burger + ul {
         display: flex;
     }
 
-    /* Liens verticaux */
+
     .navElements {
         width: 100%;
         text-align: center;
@@ -691,16 +677,4 @@ footer a:hover {
     color: var(--white);
     font-size: 0.9rem;
     text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-    form {
-        margin: 20px 15px;
-        padding: 15px;
-    }
-    #sitemapContainer {
-        padding: 15px;
-        margin: 20px 10px;
-    }
 }

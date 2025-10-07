@@ -34,7 +34,7 @@
             </form>
         <?php endif; ?>
 
-        <!-- Change form -->
+        <!-- Edit form -->
         <?php if (!empty($showEditForm) && !empty($noteToEdit)) : ?>
             <form method="POST" action="index.php?url=home/modifyNote" class="note-form">
                 <p>Modifier la note</p>
@@ -52,9 +52,9 @@
         <div class="notes-container">
             <?php if (!empty($notes) && is_array($notes)) : ?>
                 <?php foreach($notes as $note) : ?>
-                    <article class="note-card">
+                    <div class="note-card">
                         <div class="note-content">
-                            <h3 class="note-title"><?= htmlspecialchars($note['titre']) ?></h3>
+                            <p class="note-title"><?= htmlspecialchars($note['titre']) ?></>
                             <p class="note-text"><?= nl2br(htmlspecialchars($note['contenu'])) ?></p>
                         </div>
                         <div class="note-actions">
@@ -64,7 +64,7 @@
                                 <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette note ?')"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </div>
-                    </article>
+                    </div>
                 <?php endforeach; ?>
             <?php else : ?>
                 <div class="empty-state">

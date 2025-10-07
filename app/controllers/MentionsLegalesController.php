@@ -5,7 +5,7 @@ class MentionsLegalesController
 {
     public function index()
     {
-        // Inclut la vue des mentions légales
+        // Include the view of legal mentions
         require __DIR__ . '/../views/mentionsLegales.php';
     }
 }

@@ -3,13 +3,14 @@
 <main class="content">
     <p class="pageTitle">Mot de passe oublié</p>
 
-    <!-- Error and success messages -->
+    <!-- Error messages -->
     <?php if (isset($errorMessage)): ?>
         <div class="alert alert-error">
             <?= htmlspecialchars($errorMessage) ?>
         </div>
     <?php endif; ?>
-
+    
+    <!-- success messages -->
     <?php if (isset($successMessage)): ?>
         <div class="alert alert-success">
             <?= htmlspecialchars($successMessage) ?>

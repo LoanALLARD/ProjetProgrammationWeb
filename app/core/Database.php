@@ -5,6 +5,7 @@ class Database {
     private static $instance = null;
     private $connection;
 
+    //try to reach the database 
     private function __construct() {
         $config = require __DIR__ . '/../config/config.php';
 

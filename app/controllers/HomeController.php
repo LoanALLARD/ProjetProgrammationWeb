@@ -5,11 +5,12 @@ require_once __DIR__ . '/../core/Database.php';
 use core\Database;
 class HomeController
 {
-
+    //recovered the information of the user in the database
     public function index() {
         $pageTitle = "Accueil";
         $showForm = false;
 
+        //ask the database if the sessions is not initialized
         if(!empty($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
             $db = Database::getInstance()->getConnection();
@@ -24,6 +25,7 @@ class HomeController
         require __DIR__ . '/../views/home.php';
     }
 
+    //recovered the information of the user in the database + the form to add a new note
     public function showAddForm() {
         $pageTitle = "Accueil";
         $showForm = true;
@@ -42,6 +44,7 @@ class HomeController
         require __DIR__ . '/../views/home.php';
     }
 
+    // form to create a new note in the database (create)
     public function addNote() {
         if(!empty($_SESSION['user_id']) && !empty($_POST['titre']) && !empty($_POST['contenu'])) {
             $user_id = $_SESSION['user_id'];
@@ -68,6 +71,7 @@ class HomeController
         }
     }
 
+    // form to modify a note in the database (update)
     public function modifyNote() {
         if(!empty($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
@@ -132,6 +136,7 @@ class HomeController
         }
     }
 
+    // form to delete a note in the database (delete)
     public function deleteNote(){
         if(!empty($_SESSION['user_id']) && !empty($_POST['id'])){
             $user_id = $_SESSION['user_id'];

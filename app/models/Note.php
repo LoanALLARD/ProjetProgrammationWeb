@@ -1,19 +1,18 @@
 <?php
 class Note
 {
-    // ces attributs sont les attributs de ma table Note
-    //private $_id; pas besoin je crois car id est en auto increment
+    // attributes of the class Notes in the database 
     private $_titre;
     private $_contenue;
     private $_date;
 
-    //constructeur
+    //constructer
     public function __construct(array $data)
     {
         $this->hydrate($data);
     }
 
-    //hydratation
+    //hydration
     public function hydrate(array $data)
     {
         foreach($data as $key => $value)
@@ -57,7 +56,5 @@ class Note
     public function getDate(){
         return $this->_date;
     }
-
-    //METHODES
      
 }

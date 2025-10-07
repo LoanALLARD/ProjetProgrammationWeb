@@ -36,4 +36,20 @@ ProjetProgrammationWeb/
 │
 ├── .htaccess
 └── index.php
+└──tests/
+|   ├──controllers/
+│   │   ├── ForgottenPasswordControllerTest.php
+│   │   ├── HomeControllerTest.php
+│   │   └── LoginControllerTest.php
+│   │   ├── RegisterControllerTest.php
+│   │   ├── ResetPasswordControllerTest.php
+│   │   └── SiteMapControllerTest.php
+│   │   └── UpdatePasswordControllerTest.php
+|   ├──core/
+│   │   ├── DataBase.php
+│   │   └── RouterTest.php
+│   │
+│   └── models/
+│   │   ├── NoteTest.php
+│   │   └── UserTest.php
 ```

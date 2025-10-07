@@ -6,7 +6,7 @@
     <meta name="description" content="Application web simple et intuitive pour créer, organiser et partager vos notes en ligne. Accédez à vos idées partout, en toute sécurité.">
     <title><?= isset($pageTitle) ? $pageTitle : 'Sans titre' ?> | MMNotes</title>
     <link rel="stylesheet" href="/public/assets/styles/style.css">
-    <link rel="icon" type="image/x-icon" href="/public/assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/public/assets/favicon.ico">
 </head>
 <body>
     <header>

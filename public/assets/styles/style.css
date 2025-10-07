@@ -301,8 +301,8 @@ h1, h2, h3 {
 /* Notes Container */
 .notes-container {
     align-items: flex-start;
-    width: 90%;
-    justify-self: center;
+    width: 100%;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     gap : 0.8%;
@@ -357,6 +357,7 @@ h1, h2, h3 {
     display: flex;
     gap : 1%;
     align-self: flex-end;
+    margin-bottom: -35px;
 }
 
 .note-actions button,

@@ -660,6 +660,7 @@ footer {
     justify-content: center;
     align-items: center;
     align-self: flex-end;
+    flex-direction: column;
 }
 
 footer a{
@@ -680,4 +681,8 @@ footer a:hover {
     color: var(--white);
     font-size: 0.9rem;
     text-align: center;
+}
+
+#footerIconsPart {
+    margin: 8px;
 }

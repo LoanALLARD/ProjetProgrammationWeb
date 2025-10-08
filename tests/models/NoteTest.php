@@ -6,7 +6,7 @@ class NoteTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -15,7 +15,7 @@ class NoteTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -23,7 +23,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test que la classe Note existe
+     * Test that Note class exists
      */
     public function testNoteClassExists()
     {
@@ -35,7 +35,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de création d'une note avec données valides
+     * Test note creation with valid data
      */
     public function testNoteCreationWithValidData()
     {
@@ -56,7 +56,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de création d'une note avec données partielles
+     * Test note creation with partial data
      */
     public function testNoteCreationWithPartialData()
     {
@@ -74,7 +74,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de création d'une note avec array vide
+     * Test note creation with empty array
      */
     public function testNoteCreationWithEmptyArray()
     {
@@ -90,7 +90,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de l'hydratation avec différentes clés
+     * Test hydration with different keys
      */
     public function testHydrationWithDifferentKeys()
     {
@@ -100,7 +100,7 @@ class NoteTest extends TestCase
             'titre' => 'Test Hydratation',
             'contenue' => 'Test contenu',
             'date' => '2024-01-15',
-            'invalid_key' => 'Should be ignored' // Cette clé sera ignorée
+            'invalid_key' => 'Should be ignored' // This key will be ignored
         ];
         
         $note = new Note($data);
@@ -111,7 +111,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test du setter setTitre avec string valide
+     * Test setTitre setter with valid string
      */
     public function testSetTitreWithValidString()
     {
@@ -124,7 +124,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test du setter setTitre avec type invalide
+     * Test setTitre setter with invalid type
      */
     public function testSetTitreWithInvalidType()
     {
@@ -133,17 +133,17 @@ class NoteTest extends TestCase
         $note = new Note([]);
         $originalTitre = $note->getTitre();
         
-        // Tenter de définir avec un type non-string
+        // Try to set with non-string type
         $note->setTitre(123); // int
         $note->setTitre([]); // array
         $note->setTitre(null); // null
         
-        // Le titre ne devrait pas changer
+        // Title should not change
         $this->assertEquals($originalTitre, $note->getTitre());
     }
 
     /**
-     * Test du setter setContenue avec string valide
+     * Test setContenue setter with valid string
      */
     public function testSetContenueWithValidString()
     {
@@ -156,7 +156,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test du setter setContenue avec type invalide
+     * Test setContenue setter with invalid type
      */
     public function testSetContenueWithInvalidType()
     {
@@ -165,17 +165,17 @@ class NoteTest extends TestCase
         $note = new Note([]);
         $originalContenue = $note->getContenue();
         
-        // Tenter de définir avec un type non-string
+        // Try to set with non-string type
         $note->setContenue(456); // int
         $note->setContenue(true); // boolean
         $note->setContenue([]); // array
         
-        // Le contenu ne devrait pas changer
+        // Content should not change
         $this->assertEquals($originalContenue, $note->getContenue());
     }
 
     /**
-     * Test du setter setDate
+     * Test setDate setter
      */
     public function testSetDate()
     {
@@ -183,21 +183,21 @@ class NoteTest extends TestCase
         
         $note = new Note([]);
         
-        // Test avec string
+        // Test with string
         $note->setDate('2024-01-15 14:30:00');
         $this->assertEquals('2024-01-15 14:30:00', $note->getDate());
         
-        // Test avec timestamp
+        // Test with timestamp
         $note->setDate(1642251000);
         $this->assertEquals(1642251000, $note->getDate());
         
-        // Test avec null
+        // Test with null
         $note->setDate(null);
         $this->assertNull($note->getDate());
     }
 
     /**
-     * Test des getters avec valeurs nulles
+     * Test getters with null values
      */
     public function testGettersWithNullValues()
     {
@@ -211,13 +211,13 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de l'hydratation avec ucfirst sur les clés
+     * Test hydration with ucfirst logic on keys
      */
     public function testHydrationUcfirstLogic()
     {
         require_once __DIR__ . '/../../app/models/Note.php';
         
-        // Test de la logique ucfirst
+        // Test ucfirst logic
         $testCases = [
             'titre' => 'setTitre',
             'contenue' => 'setContenue',
@@ -231,7 +231,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de method_exists dans l'hydratation
+     * Test method_exists in hydration
      */
     public function testMethodExistsInHydration()
     {
@@ -239,24 +239,24 @@ class NoteTest extends TestCase
         
         $note = new Note([]);
         
-        // Méthodes qui devraient exister
+        // Methods that should exist
         $this->assertTrue(method_exists($note, 'setTitre'));
         $this->assertTrue(method_exists($note, 'setContenue'));
         $this->assertTrue(method_exists($note, 'setDate'));
         
-        // Méthodes qui ne devraient pas exister
+        // Methods that should not exist
         $this->assertFalse(method_exists($note, 'setInvalidMethod'));
         $this->assertFalse(method_exists($note, 'setNonExistent'));
     }
 
     /**
-     * Test avec des données réalistes de base de données
+     * Test with realistic database data
      */
     public function testWithRealisticDatabaseData()
     {
         require_once __DIR__ . '/../../app/models/Note.php';
         
-        // Simuler des données venant de la DB
+        // Simulate data coming from DB
         $dbData = [
             'id' => 15,
             'titre' => 'Réunion équipe projet',
@@ -267,14 +267,14 @@ class NoteTest extends TestCase
         
         $note = new Note($dbData);
         
-        // Seules les propriétés définies dans la classe devraient être affectées
+        // Only properties defined in the class should be affected
         $this->assertEquals('Réunion équipe projet', $note->getTitre());
         $this->assertEquals('Points à aborder : budget, planning, ressources humaines', $note->getContenue());
         $this->assertEquals('2024-01-15 09:30:00', $note->getDate());
     }
 
     /**
-     * Test de validation des types de données
+     * Test data type validation
      */
     public function testDataTypeValidation()
     {
@@ -286,14 +286,14 @@ class NoteTest extends TestCase
             'date' => '2024-01-15'
         ]);
         
-        // Vérifier que les getters retournent les bons types
+        // Check that getters return the right types
         $this->assertIsString($note->getTitre());
         $this->assertIsString($note->getContenue());
         $this->assertIsString($note->getDate());
     }
 
     /**
-     * Test avec des chaînes vides
+     * Test with empty strings
      */
     public function testWithEmptyStrings()
     {
@@ -313,7 +313,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test avec des chaînes contenant des caractères spéciaux
+     * Test with strings containing special characters
      */
     public function testWithSpecialCharacters()
     {
@@ -332,7 +332,7 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de modification après création
+     * Test modification after creation
      */
     public function testModificationAfterCreation()
     {
@@ -345,7 +345,7 @@ class NoteTest extends TestCase
         
         $note = new Note($initialData);
         
-        // Modifier après création
+        // Modify after creation
         $note->setTitre('Titre modifié');
         $note->setContenue('Contenu modifié');
         $note->setDate('2024-01-16 15:45:00');
@@ -356,13 +356,13 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test de cas limites pour l'hydratation
+     * Test edge cases for hydration
      */
     public function testHydrationEdgeCases()
     {
         require_once __DIR__ . '/../../app/models/Note.php';
         
-        // Test avec clés en majuscules (ne devraient pas marcher)
+        // Test with uppercase keys (should not work)
         $data = [
             'TITRE' => 'TITRE MAJUSCULE',
             'titre' => 'titre minuscule'
@@ -370,12 +370,12 @@ class NoteTest extends TestCase
         
         $note = new Note($data);
         
-        // Seule la clé en minuscule devrait fonctionner
+        // Only the lowercase key should work
         $this->assertEquals('titre minuscule', $note->getTitre());
     }
 
     /**
-     * Test de performance avec grandes données
+     * Test performance with large data
      */
     public function testPerformanceWithLargeData()
     {

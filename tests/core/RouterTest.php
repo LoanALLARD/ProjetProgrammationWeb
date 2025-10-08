@@ -6,7 +6,7 @@ class RouterTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -15,7 +15,7 @@ class RouterTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -23,7 +23,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test que la classe Router existe
+     * Test that Router class exists
      */
     public function testRouterClassExists()
     {
@@ -35,7 +35,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test que la classe Router peut être instanciée
+     * Test that Router class can be instantiated
      */
     public function testRouterCanBeInstantiated()
     {
@@ -46,7 +46,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la propriété controllerMap
+     * Test controllerMap property
      */
     public function testControllerMapProperty()
     {
@@ -62,7 +62,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test du contenu de controllerMap
+     * Test controllerMap content
      */
     public function testControllerMapContent()
     {
@@ -89,7 +89,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la méthode toUpperCase avec cas spéciaux
+     * Test toUpperCase method with special cases
      */
     public function testToUpperCaseWithSpecialCases()
     {
@@ -116,33 +116,33 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la logique strtolower dans toUpperCase
+     * Test strtolower logic in toUpperCase
      */
     public function testToUpperCaseStrtolowerLogic()
-{
-    require_once __DIR__ . '/../../app/core/Router.php';
-    
-    $router = new \core\Router();
-    $reflection = new ReflectionClass($router);
-    
-    $toUpperCaseMethod = $reflection->getMethod('toUpperCase');
-    $toUpperCaseMethod->setAccessible(true);
-    
-    $testCases = [
-        'HOME' => 'HOME',        
-        'LOGIN' => 'LOGIN',      
-        'REGISTER' => 'REGISTER',
-        'FORGOTTENPASSWORD' => 'ForgottenPassword',
-    ];
-    
-    foreach ($testCases as $input => $expected) {
-        $result = $toUpperCaseMethod->invokeArgs($router, [$input]);
-        $this->assertEquals($expected, $result, "Input: $input");
+    {
+        require_once __DIR__ . '/../../app/core/Router.php';
+        
+        $router = new \core\Router();
+        $reflection = new ReflectionClass($router);
+        
+        $toUpperCaseMethod = $reflection->getMethod('toUpperCase');
+        $toUpperCaseMethod->setAccessible(true);
+        
+        $testCases = [
+            'HOME' => 'HOME',        
+            'LOGIN' => 'LOGIN',      
+            'REGISTER' => 'REGISTER',
+            'FORGOTTENPASSWORD' => 'ForgottenPassword',
+        ];
+        
+        foreach ($testCases as $input => $expected) {
+            $result = $toUpperCaseMethod->invokeArgs($router, [$input]);
+            $this->assertEquals($expected, $result, "Input: $input");
+        }
     }
-}
 
     /**
-     * Test de la méthode toUpperCase avec chaînes simples
+     * Test toUpperCase method with simple strings
      */
     public function testToUpperCaseWithSimpleStrings()
     {
@@ -169,7 +169,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la méthode toUpperCase avec majuscules déjà présentes
+     * Test toUpperCase method with existing capitals
      */
     public function testToUpperCaseWithExistingCapitals()
     {
@@ -195,7 +195,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la méthode toUpperCase avec séparateurs
+     * Test toUpperCase method with separators
      */
     public function testToUpperCaseWithSeparators()
     {
@@ -222,11 +222,11 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la logique ucwords dans toUpperCase
+     * Test ucwords logic in toUpperCase
      */
     public function testToUpperCaseUcwordsLogic()
     {
-        // Test des fonctions utilisées dans toUpperCase
+        // Test functions used in toUpperCase
         $testStrings = [
             'hello world' => 'Hello World',
             'my test string' => 'My Test String',
@@ -240,7 +240,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de la regex preg_match dans toUpperCase
+     * Test preg_match regex in toUpperCase
      */
     public function testToUpperCasePregMatchLogic()
     {
@@ -259,24 +259,24 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de traitement d'URL par défaut
+     * Test default URL handling
      */
     public function testDefaultUrlHandling()
     {
-        // Test avec $_GET vide
+        // Test with empty $_GET
         $_GET = [];
         
         $url = $_GET['url'] ?? 'home/index';
         $this->assertEquals('home/index', $url);
         
-        // Test avec $_GET['url'] défini
+        // Test with $_GET['url'] defined
         $_GET['url'] = 'login/index';
         $url = $_GET['url'] ?? 'home/index';
         $this->assertEquals('login/index', $url);
     }
 
     /**
-     * Test de la logique explode pour les paramètres
+     * Test explode logic for parameters
      */
     public function testExplodeUrlLogic()
     {
@@ -294,7 +294,7 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de construction du nom de contrôleur
+     * Test controller name construction
      */
     public function testControllerNameConstruction()
     {
@@ -312,54 +312,51 @@ class RouterTest extends TestCase
     }
 
     /**
-     * Test de récupération de la méthode par défaut
+     * Test default method retrieval - CORRECTED
      */
-    /**
- * Test de récupération de la méthode par défaut - CORRIGÉ
- */
-public function testDefaultMethodRetrieval()
-{
-    // Test 1: Un seul paramètre → méthode par défaut 'index'
-    $params1 = ['home'];
-    $methodName1 = $params1[1] ?? 'index';
-    $this->assertEquals('index', $methodName1);
-    
-    // Test 2: Deux paramètres → deuxième paramètre
-    $params2 = ['home', 'index'];
-    $methodName2 = $params2[1] ?? 'index';
-    $this->assertEquals('index', $methodName2);
-    
-    // Test 3: Deux paramètres avec méthode différente
-    $params3 = ['home', 'show'];
-    $methodName3 = $params3[1] ?? 'index';
-    $this->assertEquals('show', $methodName3);
-    
-    // Test 4: Deux paramètres avec autre méthode
-    $params4 = ['user', 'profile'];
-    $methodName4 = $params4[1] ?? 'index';
-    $this->assertEquals('profile', $methodName4);
-}
+    public function testDefaultMethodRetrieval()
+    {
+        // Test 1: Single parameter → default method 'index'
+        $params1 = ['home'];
+        $methodName1 = $params1[1] ?? 'index';
+        $this->assertEquals('index', $methodName1);
+        
+        // Test 2: Two parameters → second parameter
+        $params2 = ['home', 'index'];
+        $methodName2 = $params2[1] ?? 'index';
+        $this->assertEquals('index', $methodName2);
+        
+        // Test 3: Two parameters with different method
+        $params3 = ['home', 'show'];
+        $methodName3 = $params3[1] ?? 'index';
+        $this->assertEquals('show', $methodName3);
+        
+        // Test 4: Two parameters with another method
+        $params4 = ['user', 'profile'];
+        $methodName4 = $params4[1] ?? 'index';
+        $this->assertEquals('profile', $methodName4);
+    }
 
     /**
-     * Test des messages d'erreur
+     * Test error messages
      */
     public function testErrorMessages()
     {
         $controllerName = 'controllers\\NonExistentController';
         $methodName = 'nonExistentMethod';
         
-        $controllerError = "Contrôleur $controllerName inexistant.";
-        $methodError = "Méthode $methodName inexistante.";
+        $controllerError = "Controller $controllerName does not exist.";
+        $methodError = "Method $methodName does not exist.";
         
-        $this->assertEquals("Contrôleur controllers\\NonExistentController inexistant.", $controllerError);
-        $this->assertEquals("Méthode nonExistentMethod inexistante.", $methodError);
+        $this->assertEquals("Controller controllers\\NonExistentController does not exist.", $controllerError);
+        $this->assertEquals("Method nonExistentMethod does not exist.", $methodError);
         
-        $this->assertStringContainsString('inexistant', $controllerError);
-        $this->assertStringContainsString('inexistante', $methodError);
+        $this->assertStringContainsString('does not exist', $controllerError);
+        $this->assertStringContainsString('does not exist', $methodError);
     }
 
     /**
-     * Test de la visibilité des méthodes
+     * Test method visibility
      */
     public function testMethodVisibility()
     {
@@ -367,42 +364,42 @@ public function testDefaultMethodRetrieval()
         
         $reflection = new ReflectionClass('core\Router');
         
-        // run() doit être publique
+        // run() must be public
         $runMethod = $reflection->getMethod('run');
         $this->assertTrue($runMethod->isPublic());
         
-        // toUpperCase() doit être privée
+        // toUpperCase() must be private
         $toUpperCaseMethod = $reflection->getMethod('toUpperCase');
         $this->assertTrue($toUpperCaseMethod->isPrivate());
     }
 
     /**
-     * Test de workflow complet de routage
+     * Test complete routing workflow
      */
     public function testCompleteRoutingWorkflow()
     {
         $_GET['url'] = 'home/index';
         
-        // Étape 1: Récupération de l'URL
+        // Step 1: URL retrieval
         $url = $_GET['url'] ?? 'home/index';
         $this->assertEquals('home/index', $url);
         
-        // Étape 2: Explosion des paramètres
+        // Step 2: Parameter explosion
         $params = explode('/', $url);
         $this->assertEquals(['home', 'index'], $params);
         
-        // Étape 3: Construction du nom de contrôleur (simulation)
-        $transformedController = ucfirst(strtolower($params[0])); // Simulation simplifiée
+        // Step 3: Controller name construction (simulation)
+        $transformedController = ucfirst(strtolower($params[0])); // Simplified simulation
         $controllerName = 'controllers\\' . $transformedController . 'Controller';
         $this->assertEquals('controllers\\HomeController', $controllerName);
         
-        // Étape 4: Récupération de la méthode
+        // Step 4: Method retrieval
         $methodName = $params[1] ?? 'index';
         $this->assertEquals('index', $methodName);
     }
 
     /**
-     * Test avec URL complexe
+     * Test with complex URL
      */
     public function testComplexUrlHandling()
     {
@@ -416,7 +413,7 @@ public function testDefaultMethodRetrieval()
     }
 
     /**
-     * Test de namespace dans le nom de contrôleur
+     * Test namespace in controller name
      */
     public function testNamespaceInControllerName()
     {
@@ -428,7 +425,7 @@ public function testDefaultMethodRetrieval()
     }
 
     /**
-     * Test de cas limite - URL vide
+     * Test edge case - Empty URL
      */
     public function testEmptyUrlHandling()
     {
@@ -442,7 +439,7 @@ public function testDefaultMethodRetrieval()
     }
 
     /**
-     * Test de robustesse avec différents types d'URL
+     * Test robustness with different URL types
      */
     public function testUrlRobustness()
     {

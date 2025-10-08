@@ -6,7 +6,7 @@ class UserTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -15,7 +15,7 @@ class UserTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -23,21 +23,21 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test que la classe User existe
+     * Test that User class exists
      */
     public function testUserClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $userFile = __DIR__ . '/../../app/models/User.php';
         $this->assertFileExists($userFile);
         
-        // Inclure le fichier pour vérifier la syntaxe
+        // Include the file to check syntax
         require_once $userFile;
         $this->assertTrue(class_exists('User'));
     }
 
     /**
-     * Test que la classe User peut être instanciée
+     * Test that User class can be instantiated
      */
     public function testUserCanBeInstantiated()
     {
@@ -48,7 +48,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test que la méthode getAll existe
+     * Test that getAll method exists
      */
     public function testGetAllMethodExists()
     {
@@ -59,24 +59,24 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de la structure de la requête SQL dans getAll
+     * Test SQL query structure in getAll
      */
     public function testGetAllSqlQueryStructure()
     {
         $expectedQuery = "SELECT * FROM users";
         
-        // Vérifier la structure de la requête
+        // Check query structure
         $this->assertStringContainsString('SELECT', $expectedQuery);
         $this->assertStringContainsString('FROM users', $expectedQuery);
         $this->assertStringContainsString('*', $expectedQuery);
     }
 
     /**
-     * Test de la logique de traitement des résultats - Cas avec données
+     * Test result processing logic - Case with data
      */
     public function testGetAllResultProcessingWithData()
     {
-        // Simuler des données de résultat
+        // Simulate result data
         $mockData = [
             [
                 'id' => 1,
@@ -92,7 +92,7 @@ class UserTest extends TestCase
             ]
         ];
 
-        // Simuler la logique de getAll
+        // Simulate getAll logic
         $users = [];
         foreach ($mockData as $row) {
             $users[] = $row;
@@ -106,14 +106,14 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de la logique de traitement des résultats - Cas sans données
+     * Test result processing logic - Case without data
      */
     public function testGetAllResultProcessingWithoutData()
     {
-        // Simuler aucune donnée
+        // Simulate no data
         $mockData = [];
 
-        // Simuler la logique de getAll
+        // Simulate getAll logic
         $users = [];
         foreach ($mockData as $row) {
             $users[] = $row;
@@ -125,7 +125,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de validation de la structure d'un utilisateur
+     * Test user data structure validation
      */
     public function testUserDataStructureValidation()
     {
@@ -138,14 +138,14 @@ class UserTest extends TestCase
             'inscription_date' => '2024-01-15 10:30:00'
         ];
 
-        // Vérifier la structure
+        // Check structure
         $this->assertIsArray($sampleUser);
         $this->assertArrayHasKey('id', $sampleUser);
         $this->assertArrayHasKey('identifiant', $sampleUser);
         $this->assertArrayHasKey('email', $sampleUser);
         $this->assertArrayHasKey('password', $sampleUser);
 
-        // Vérifier les types
+        // Check types
         $this->assertIsInt($sampleUser['id']);
         $this->assertIsString($sampleUser['identifiant']);
         $this->assertIsString($sampleUser['email']);
@@ -153,7 +153,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de validation des données utilisateur - Email
+     * Test user data validation - Email
      */
     public function testUserEmailValidation()
     {
@@ -171,16 +171,16 @@ class UserTest extends TestCase
         ];
 
         foreach ($validEmails as $email) {
-            $this->assertNotFalse(filter_var($email, FILTER_VALIDATE_EMAIL), "Email valide: $email");
+            $this->assertNotFalse(filter_var($email, FILTER_VALIDATE_EMAIL), "Valid email: $email");
         }
 
         foreach ($invalidEmails as $email) {
-            $this->assertFalse(filter_var($email, FILTER_VALIDATE_EMAIL), "Email invalide: $email");
+            $this->assertFalse(filter_var($email, FILTER_VALIDATE_EMAIL), "Invalid email: $email");
         }
     }
 
     /**
-     * Test de validation des données utilisateur - Identifiant
+     * Test user data validation - Username
      */
     public function testUserIdentifiantValidation()
     {
@@ -194,16 +194,16 @@ class UserTest extends TestCase
 
         foreach ($invalidIdentifiants as $identifiant) {
             $isValid = !empty(trim($identifiant)) && strlen(trim($identifiant)) >= 3 && !preg_match('/\s/', $identifiant);
-            $this->assertFalse($isValid, "Identifiant invalide: '$identifiant'");
+            $this->assertFalse($isValid, "Invalid username: '$identifiant'");
         }
     }
 
     /**
-     * Test de logique de boucle while avec fetch_assoc
+     * Test while loop logic with fetch_assoc
      */
     public function testWhileLoopLogic()
     {
-        // Simuler le comportement de fetch_assoc
+        // Simulate fetch_assoc behavior
         $mockRows = [
             ['id' => 1, 'name' => 'User 1'],
             ['id' => 2, 'name' => 'User 2'],
@@ -213,7 +213,7 @@ class UserTest extends TestCase
         $users = [];
         $index = 0;
 
-        // Simuler while ($row = $result->fetch_assoc())
+        // Simulate while ($row = $result->fetch_assoc())
         while ($index < count($mockRows)) {
             $row = $mockRows[$index];
             $users[] = $row;
@@ -226,16 +226,16 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de gestion des résultats null/false
+     * Test null/false result handling
      */
     public function testNullResultHandling()
     {
-        // Simuler $result = false (échec de requête)
+        // Simulate $result = false (query failure)
         $result = false;
         
         $users = [];
         if ($result) {
-            // Cette partie ne devrait pas s'exécuter
+            // This part should not execute
             $users[] = ['should' => 'not_appear'];
         }
 
@@ -244,13 +244,13 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de sécurité - Pas d'injection SQL
+     * Test security - No SQL injection
      */
     public function testSqlInjectionSafety()
     {
         $query = "SELECT * FROM users";
         
-        // Vérifier qu'il n'y a pas de variables non sécurisées dans la requête
+        // Check that there are no unsafe variables in the query
         $this->assertStringNotContainsString('$_', $query);
         $this->assertStringNotContainsString('<?', $query);
         $this->assertStringNotContainsString('UNION', $query);
@@ -259,26 +259,26 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de performance - Requête optimisée
+     * Test performance - Optimized query
      */
     public function testQueryPerformanceConsiderations()
     {
         $query = "SELECT * FROM users";
         
-        // Pour une vraie optimisation, on devrait éviter SELECT *
-        // Mais ici on teste la requête actuelle
+        // For real optimization, we should avoid SELECT *
+        // But here we test the current query
         $this->assertStringContainsString('SELECT', $query);
         $this->assertStringContainsString('users', $query);
         
-        // Note: En production, préférer : SELECT id, identifiant, email FROM users
+        // Note: In production, prefer: SELECT id, identifiant, email FROM users
     }
 
     /**
-     * Test de cohérence des types de retour
+     * Test return type consistency
      */
     public function testReturnTypeConsistency()
     {
-        // La méthode doit toujours retourner un array
+        // The method should always return an array
         $emptyResult = [];
         $filledResult = [
             ['id' => 1, 'name' => 'User 1'],
@@ -290,7 +290,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de structure de données cohérente
+     * Test consistent data structure
      */
     public function testDataStructureConsistency()
     {
@@ -307,7 +307,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de validation du format de mot de passe hashé
+     * Test hashed password format validation
      */
     public function testPasswordHashFormat()
     {
@@ -317,18 +317,18 @@ class UserTest extends TestCase
         ];
 
         foreach ($validHashes as $hash) {
-            // Vérifier le format de hash bcrypt
+            // Check bcrypt hash format
             $this->assertStringStartsWith('$2y$', $hash);
             $this->assertGreaterThan(50, strlen($hash));
         }
     }
 
     /**
-     * Test de limite et pagination (fonctionnalité future)
+     * Test limit and pagination (future feature)
      */
     public function testPaginationConsiderations()
     {
-        // Pour de futures améliorations
+        // For future improvements
         $limit = 10;
         $offset = 0;
         
@@ -337,13 +337,13 @@ class UserTest extends TestCase
         $this->assertGreaterThan(0, $limit);
         $this->assertGreaterThanOrEqual(0, $offset);
         
-        // Exemple de requête avec pagination
+        // Example query with pagination
         $paginatedQuery = "SELECT * FROM users LIMIT $limit OFFSET $offset";
         $this->assertStringContainsString('LIMIT', $paginatedQuery);
     }
 
     /**
-     * Test de filtrage par statut (fonctionnalité future)
+     * Test status filtering (future feature)
      */
     public function testUserStatusFiltering()
     {
@@ -353,7 +353,7 @@ class UserTest extends TestCase
             ['id' => 3, 'identifiant' => 'user3', 'active' => true]
         ];
 
-        // Simuler filtrage des utilisateurs actifs
+        // Simulate active users filtering
         $activeUsers = array_filter($users, function($user) {
             return $user['active'] === true;
         });
@@ -362,7 +362,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test de recherche d'utilisateur par critère
+     * Test user search by criteria
      */
     public function testUserSearchLogic()
     {
@@ -372,7 +372,7 @@ class UserTest extends TestCase
             ['id' => 3, 'identifiant' => 'bob_wilson', 'email' => 'bob@test.com']
         ];
 
-        // Recherche par identifiant
+        // Search by username
         $searchTerm = 'john';
         $foundUsers = array_filter($users, function($user) use ($searchTerm) {
             return strpos(strtolower($user['identifiant']), strtolower($searchTerm)) !== false;

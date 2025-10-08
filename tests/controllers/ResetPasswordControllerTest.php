@@ -6,7 +6,7 @@ class ResetPasswordControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -18,7 +18,7 @@ class ResetPasswordControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -30,24 +30,24 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe ResetPasswordController existe
+     * Test that ResetPasswordController class exists
      */
     public function testResetPasswordControllerClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $controllerFile = __DIR__ . '/../../app/controllers/ResetPasswordController.php';
         $this->assertFileExists($controllerFile);
         
-        // Test de base
+        // Basic test
         $this->assertTrue(true);
     }
 
     /**
-     * Test de démarrage automatique de session dans le constructeur
+     * Test automatic session start in constructor
      */
     public function testConstructorStartsSession()
     {
-        // Simuler la logique du constructeur
+        // Simulate constructor logic
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -56,24 +56,24 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test index() sans code de réinitialisation en session
+     * Test index() without reset code in session
      */
     public function testIndexWithoutResetCode()
     {
-        // Pas de code en session
+        // No code in session
         unset($_SESSION['reset_code']);
         
-        // Vérifier la logique de validation
+        // Check validation logic
         $hasResetCode = isset($_SESSION['reset_code']);
         $this->assertFalse($hasResetCode);
         
-        // Message d'erreur attendu
-        $expectedError = "Aucune demande de réinitialisation en cours.";
-        $this->assertEquals("Aucune demande de réinitialisation en cours.", $expectedError);
+        // Expected error message
+        $expectedError = "No password reset request in progress.";
+        $this->assertEquals("No password reset request in progress.", $expectedError);
     }
 
     /**
-     * Test index() avec code de réinitialisation en session
+     * Test index() with reset code in session
      */
     public function testIndexWithResetCode()
     {
@@ -85,22 +85,22 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test index() - Gestion des messages de session
+     * Test index() - Session message handling
      */
     public function testIndexMessageHandling()
     {
         $_SESSION['reset_code'] = 123456;
-        $_SESSION['success_message'] = "Code envoyé !";
-        $_SESSION['error_message'] = "Erreur test";
+        $_SESSION['success_message'] = "Code sent!";
+        $_SESSION['error_message'] = "Test error";
         
-        // Récupérer les messages
+        // Retrieve messages
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
         
-        $this->assertEquals("Code envoyé !", $successMessage);
-        $this->assertEquals("Erreur test", $errorMessage);
+        $this->assertEquals("Code sent!", $successMessage);
+        $this->assertEquals("Test error", $errorMessage);
         
-        // Simuler la suppression
+        // Simulate deletion
         unset($_SESSION['success_message'], $_SESSION['error_message']);
         
         $this->assertArrayNotHasKey('success_message', $_SESSION);
@@ -108,7 +108,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test verificationCode() - Code vide
+     * Test verificationCode() - Empty code
      */
     public function testVerificationCodeEmpty()
     {
@@ -119,12 +119,12 @@ class ResetPasswordControllerTest extends TestCase
         
         $this->assertTrue($isEmpty);
         
-        $expectedError = "Veuillez saisir le code reçu par e-mail.";
-        $this->assertEquals("Veuillez saisir le code reçu par e-mail.", $expectedError);
+        $expectedError = "Please enter the code received by email.";
+        $this->assertEquals("Please enter the code received by email.", $expectedError);
     }
 
     /**
-     * Test verificationCode() - Code fourni
+     * Test verificationCode() - Code provided
      */
     public function testVerificationCodeProvided()
     {
@@ -138,7 +138,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test verificationCode() - Trim du code saisi
+     * Test verificationCode() - Entered code trimming
      */
     public function testVerificationCodeTrimming()
     {
@@ -151,7 +151,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test verificationCode() - Aucun code sauvegardé en session
+     * Test verificationCode() - No saved code in session
      */
     public function testVerificationCodeNoSavedCode()
     {
@@ -162,18 +162,18 @@ class ResetPasswordControllerTest extends TestCase
         
         $this->assertNull($savedCode);
         
-        $expectedError = "Aucun code généré. Veuillez recommencer la procédure.";
-        $this->assertEquals("Aucun code généré. Veuillez recommencer la procédure.", $expectedError);
+        $expectedError = "No code generated. Please restart the procedure.";
+        $this->assertEquals("No code generated. Please restart the procedure.", $expectedError);
     }
 
     /**
-     * Test verificationCode() - Code expiré
+     * Test verificationCode() - Expired code
      */
     public function testVerificationCodeExpired()
     {
         $_POST['enteredCode'] = '123456';
         $_SESSION['reset_code'] = 123456;
-        $_SESSION['reset_code_time'] = time() - 1000; // Il y a 1000 secondes (>15min)
+        $_SESSION['reset_code_time'] = time() - 1000; // 1000 seconds ago (>15min)
         
         $elapsed = time() - $_SESSION['reset_code_time'];
         $isExpired = $elapsed > 900; // 900s = 15min
@@ -181,18 +181,18 @@ class ResetPasswordControllerTest extends TestCase
         $this->assertTrue($isExpired);
         $this->assertGreaterThan(900, $elapsed);
         
-        $expectedError = "Le code a expiré. Veuillez recommencer.";
-        $this->assertEquals("Le code a expiré. Veuillez recommencer.", $expectedError);
+        $expectedError = "The code has expired. Please try again.";
+        $this->assertEquals("The code has expired. Please try again.", $expectedError);
     }
 
     /**
-     * Test verificationCode() - Code valide (non expiré)
+     * Test verificationCode() - Valid code (not expired)
      */
     public function testVerificationCodeNotExpired()
     {
         $_POST['enteredCode'] = '123456';
         $_SESSION['reset_code'] = 123456;
-        $_SESSION['reset_code_time'] = time() - 300; // Il y a 5 minutes
+        $_SESSION['reset_code_time'] = time() - 300; // 5 minutes ago
         
         $elapsed = time() - $_SESSION['reset_code_time'];
         $isExpired = $elapsed > 900;
@@ -202,7 +202,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test verificationCode() - Code correct
+     * Test verificationCode() - Correct code
      */
     public function testVerificationCodeCorrect()
     {
@@ -221,7 +221,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test verificationCode() - Code incorrect
+     * Test verificationCode() - Incorrect code
      */
     public function testVerificationCodeIncorrect()
     {
@@ -238,12 +238,12 @@ class ResetPasswordControllerTest extends TestCase
         $this->assertEquals(654321, (int)$enteredCode);
         $this->assertEquals(123456, (int)$savedCode);
         
-        $expectedError = "Code incorrect. Veuillez réessayer.";
-        $this->assertEquals("Code incorrect. Veuillez réessayer.", $expectedError);
+        $expectedError = "Incorrect code. Please try again.";
+        $this->assertEquals("Incorrect code. Please try again.", $expectedError);
     }
 
     /**
-     * Test verificationCode() - Succès de vérification
+     * Test verificationCode() - Verification success
      */
     public function testVerificationCodeSuccess()
     {
@@ -251,48 +251,48 @@ class ResetPasswordControllerTest extends TestCase
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time() - 300;
         
-        // Simuler le succès
+        // Simulate success
         $_SESSION['code_verified'] = true;
-        $_SESSION['success_message'] = "Code validé ! Veuillez saisir votre nouveau mot de passe.";
+        $_SESSION['success_message'] = "Code validated! Please enter your new password.";
         
         $this->assertTrue($_SESSION['code_verified']);
-        $this->assertEquals("Code validé ! Veuillez saisir votre nouveau mot de passe.", $_SESSION['success_message']);
+        $this->assertEquals("Code validated! Please enter your new password.", $_SESSION['success_message']);
     }
 
     /**
-     * Test de calcul du temps écoulé
+     * Test elapsed time calculation
      */
     public function testElapsedTimeCalculation()
     {
         $currentTime = time();
-        $codeTime = $currentTime - 600; // Il y a 10 minutes
+        $codeTime = $currentTime - 600; // 10 minutes ago
         
         $elapsed = $currentTime - $codeTime;
         
         $this->assertEquals(600, $elapsed);
-        $this->assertLessThan(900, $elapsed); // Pas encore expiré
+        $this->assertLessThan(900, $elapsed); // Not yet expired
         
-        // Test avec code expiré
-        $expiredCodeTime = $currentTime - 1200; // Il y a 20 minutes
+        // Test with expired code
+        $expiredCodeTime = $currentTime - 1200; // 20 minutes ago
         $elapsedExpired = $currentTime - $expiredCodeTime;
         
         $this->assertEquals(1200, $elapsedExpired);
-        $this->assertGreaterThan(900, $elapsedExpired); // Expiré
+        $this->assertGreaterThan(900, $elapsedExpired); // Expired
     }
 
     /**
-     * Test de la durée d'expiration (15 minutes = 900 secondes)
+     * Test expiration duration (15 minutes = 900 seconds)
      */
     public function testExpirationDuration()
     {
-        $expirationDuration = 900; // 15 minutes en secondes
+        $expirationDuration = 900; // 15 minutes in seconds
         
         $this->assertEquals(900, $expirationDuration);
         $this->assertEquals(15 * 60, $expirationDuration);
     }
 
     /**
-     * Test de conversion de code en entier
+     * Test code integer conversion
      */
     public function testCodeIntegerConversion()
     {
@@ -303,7 +303,7 @@ class ResetPasswordControllerTest extends TestCase
         $this->assertIsInt((int)$stringCode);
         $this->assertIsString($stringCode);
         
-        // Test avec code contenant des espaces
+        // Test with code containing spaces
         $codeWithSpaces = '  123456  ';
         $trimmedCode = trim($codeWithSpaces);
         
@@ -311,16 +311,16 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test des messages d'erreur
+     * Test error messages
      */
     public function testErrorMessages()
     {
         $errorMessages = [
-            'no_reset_request' => "Aucune demande de réinitialisation en cours.",
-            'empty_code' => "Veuillez saisir le code reçu par e-mail.",
-            'no_code_generated' => "Aucun code généré. Veuillez recommencer la procédure.",
-            'code_expired' => "Le code a expiré. Veuillez recommencer.",
-            'incorrect_code' => "Code incorrect. Veuillez réessayer."
+            'no_reset_request' => "No password reset request in progress.",
+            'empty_code' => "Please enter the code received by email.",
+            'no_code_generated' => "No code generated. Please restart the procedure.",
+            'code_expired' => "The code has expired. Please try again.",
+            'incorrect_code' => "Incorrect code. Please try again."
         ];
         
         foreach ($errorMessages as $key => $message) {
@@ -331,20 +331,20 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test des messages de succès
+     * Test success messages
      */
     public function testSuccessMessages()
     {
-        $successMessage = "Code validé ! Veuillez saisir votre nouveau mot de passe.";
+        $successMessage = "Code validated! Please enter your new password.";
         
         $this->assertIsString($successMessage);
         $this->assertNotEmpty($successMessage);
-        $this->assertStringContainsString("Code validé", $successMessage);
-        $this->assertStringContainsString("nouveau mot de passe", $successMessage);
+        $this->assertStringContainsString("Code validated", $successMessage);
+        $this->assertStringContainsString("new password", $successMessage);
     }
 
     /**
-     * Test des URLs de redirection
+     * Test redirection URLs
      */
     public function testRedirectionUrls()
     {
@@ -361,14 +361,14 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de nettoyage de session après expiration
+     * Test session cleanup after expiration
      */
     public function testSessionCleanupAfterExpiration()
     {
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time() - 1000;
         
-        // Simuler le nettoyage
+        // Simulate cleanup
         unset($_SESSION['reset_code'], $_SESSION['reset_code_time']);
         
         $this->assertArrayNotHasKey('reset_code', $_SESSION);
@@ -376,7 +376,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de validation de code avec différents formats
+     * Test code validation with different formats
      */
     public function testCodeFormatValidation()
     {
@@ -396,16 +396,16 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de vérification de l'existence de clés de session
+     * Test session key existence verification
      */
     public function testSessionKeyExistence()
     {
-        // Test avec clés manquantes
+        // Test with missing keys
         $this->assertFalse(isset($_SESSION['reset_code']));
         $this->assertFalse(isset($_SESSION['reset_code_time']));
         $this->assertFalse(isset($_SESSION['code_verified']));
         
-        // Test avec clés présentes
+        // Test with present keys
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time();
         $_SESSION['code_verified'] = true;
@@ -416,26 +416,26 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de logique de workflow complet
+     * Test complete workflow logic
      */
     public function testCompleteWorkflowLogic()
     {
-        // Étape 1: Code généré
+        // Step 1: Code generated
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time();
         
-        // Étape 2: Utilisateur saisit le bon code
+        // Step 2: User enters correct code
         $_POST['enteredCode'] = '123456';
         $enteredCode = trim($_POST['enteredCode']);
         
-        // Étape 3: Validation du temps
+        // Step 3: Time validation
         $elapsed = time() - $_SESSION['reset_code_time'];
         $isNotExpired = $elapsed <= 900;
         
-        // Étape 4: Validation du code
+        // Step 4: Code validation
         $isCorrect = (int)$enteredCode === (int)$_SESSION['reset_code'];
         
-        // Étape 5: Succès
+        // Step 5: Success
         $workflowSuccess = $isNotExpired && $isCorrect;
         
         $this->assertTrue($isNotExpired);

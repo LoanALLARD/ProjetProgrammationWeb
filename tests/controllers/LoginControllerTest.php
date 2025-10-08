@@ -6,7 +6,7 @@ class LoginControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -18,7 +18,7 @@ class LoginControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -30,24 +30,24 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe LoginController existe
+     * Test that LoginController class exists
      */
     public function testLoginControllerClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $controllerFile = __DIR__ . '/../../app/controllers/LoginController.php';
         $this->assertFileExists($controllerFile);
         
-        // Test de base
+        // Basic test
         $this->assertTrue(true);
     }
 
     /**
-     * Test de la méthode index sans messages
+     * Test index method without messages
      */
     public function testIndexWithoutMessages()
     {
-        // Aucun message en session
+        // No message in session
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
         
@@ -56,44 +56,44 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de la méthode index avec message de succès
+     * Test index method with success message
      */
     public function testIndexWithSuccessMessage()
     {
-        $_SESSION['success_message'] = "Connexion réussie !";
+        $_SESSION['success_message'] = "Login successful!";
         
         $successMessage = $_SESSION['success_message'] ?? null;
-        $this->assertEquals("Connexion réussie !", $successMessage);
+        $this->assertEquals("Login successful!", $successMessage);
         
-        // Simuler la suppression du message
+        // Simulate message deletion
         unset($_SESSION['success_message']);
         $this->assertArrayNotHasKey('success_message', $_SESSION);
     }
 
     /**
-     * Test de la méthode index avec message d'erreur
+     * Test index method with error message
      */
     public function testIndexWithErrorMessage()
     {
-        $_SESSION['error_message'] = "Identifiant ou mot de passe incorrect !";
+        $_SESSION['error_message'] = "Invalid username or password!";
         
         $errorMessage = $_SESSION['error_message'] ?? null;
-        $this->assertEquals("Identifiant ou mot de passe incorrect !", $errorMessage);
+        $this->assertEquals("Invalid username or password!", $errorMessage);
         
-        // Simuler la suppression du message
+        // Simulate message deletion
         unset($_SESSION['error_message']);
         $this->assertArrayNotHasKey('error_message', $_SESSION);
     }
 
     /**
-     * Test de nettoyage des messages en session
+     * Test session message cleanup
      */
     public function testSessionMessageCleanup()
     {
         $_SESSION['success_message'] = "Test success";
         $_SESSION['error_message'] = "Test error";
         
-        // Simuler le nettoyage fait dans index()
+        // Simulate cleanup done in index()
         unset($_SESSION['success_message'], $_SESSION['error_message']);
         
         $this->assertArrayNotHasKey('success_message', $_SESSION);
@@ -101,7 +101,7 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de validation des données de login - Identifiant vide
+     * Test login data validation - Empty username
      */
     public function testLoginValidationEmptyIdentifiant()
     {
@@ -116,7 +116,7 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de validation des données de login - Mot de passe vide
+     * Test login data validation - Empty password
      */
     public function testLoginValidationEmptyPassword()
     {
@@ -131,7 +131,7 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de validation des données de login - Données valides
+     * Test login data validation - Valid data
      */
     public function testLoginValidationValidData()
     {
@@ -148,7 +148,7 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de trim sur l'identifiant
+     * Test username trimming
      */
     public function testIdentifiantTrimming()
     {
@@ -161,61 +161,61 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de vérification de mot de passe
+     * Test password verification
      */
     public function testPasswordVerification()
     {
         $plainPassword = 'motdepasse123';
         $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
         
-        // Test avec bon mot de passe
+        // Test with correct password
         $isValid = password_verify($plainPassword, $hashedPassword);
         $this->assertTrue($isValid);
         
-        // Test avec mauvais mot de passe
-        $isInvalid = password_verify('mauvais_mot_de_passe', $hashedPassword);
+        // Test with wrong password
+        $isInvalid = password_verify('wrong_password', $hashedPassword);
         $this->assertFalse($isInvalid);
     }
 
     /**
-     * Test de la logique de session lors de la connexion réussie
+     * Test session logic during successful login
      */
     public function testSuccessfulLoginSessionLogic()
     {
-        // Simuler les données utilisateur récupérées de la DB
+        // Simulate user data retrieved from DB
         $user = [
             'ID' => 123,
             'IDENTIFIANT' => 'user123',
             'PASSWORD' => password_hash('motdepasse123', PASSWORD_DEFAULT)
         ];
         
-        // Simuler la logique de connexion réussie
+        // Simulate successful login logic
         $_SESSION['user_id'] = $user['ID'];
         $_SESSION['identifiant'] = $user['IDENTIFIANT'];
-        $_SESSION['success_message'] = "Connexion réussie !";
+        $_SESSION['success_message'] = "Login successful!";
         
         $this->assertEquals(123, $_SESSION['user_id']);
         $this->assertEquals('user123', $_SESSION['identifiant']);
-        $this->assertEquals("Connexion réussie !", $_SESSION['success_message']);
+        $this->assertEquals("Login successful!", $_SESSION['success_message']);
     }
 
     /**
-     * Test de la logique d'échec de connexion
+     * Test failed login logic
      */
     public function testFailedLoginLogic()
     {
-        // Cas 1: Utilisateur non trouvé (user = null)
+        // Case 1: User not found (user = null)
         $user = null;
         $password = 'motdepasse123';
         
         $loginSuccessful = $user !== null && password_verify($password, $user['PASSWORD'] ?? '');
         $this->assertFalse($loginSuccessful);
         
-        // Cas 2: Mauvais mot de passe
+        // Case 2: Wrong password
         $user = [
             'ID' => 123,
             'IDENTIFIANT' => 'user123',
-            'PASSWORD' => password_hash('autre_mot_de_passe', PASSWORD_DEFAULT)
+            'PASSWORD' => password_hash('different_password', PASSWORD_DEFAULT)
         ];
         $password = 'motdepasse123';
         
@@ -224,18 +224,18 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de la méthode logout - Nettoyage de session
+     * Test logout method - Session cleanup
      */
     public function testLogoutSessionCleanup()
     {
-        // Préparer une session avec des données utilisateur
+        // Prepare session with user data
         $_SESSION['user_id'] = 123;
         $_SESSION['identifiant'] = 'user123';
-        $_SESSION['success_message'] = "Connexion réussie !";
-        $_SESSION['error_message'] = "Une erreur";
-        $_SESSION['other_data'] = "Autres données";
+        $_SESSION['success_message'] = "Login successful!";
+        $_SESSION['error_message'] = "An error";
+        $_SESSION['other_data'] = "Other data";
         
-        // Simuler la logique de logout
+        // Simulate logout logic
         unset($_SESSION['user_id']);
         unset($_SESSION['identifiant']);
         unset($_SESSION['success_message']);
@@ -246,20 +246,20 @@ class LoginControllerTest extends TestCase
         $this->assertArrayNotHasKey('success_message', $_SESSION);
         $this->assertArrayNotHasKey('error_message', $_SESSION);
         
-        // Les autres données devraient encore être là avant session_unset()
+        // Other data should still be there before session_unset()
         $this->assertArrayHasKey('other_data', $_SESSION);
     }
 
     /**
-     * Test des messages d'erreur et de succès
+     * Test error and success messages
      */
     public function testSessionMessages()
     {
         $messages = [
-            'success_login' => "Connexion réussie !",
-            'error_credentials' => "Identifiant ou mot de passe incorrect !",
-            'error_connection_prefix' => "Erreur lors de la connexion : ",
-            'error_logout_prefix' => "Erreur lors de la déconnexion : "
+            'success_login' => "Login successful!",
+            'error_credentials' => "Invalid username or password!",
+            'error_connection_prefix' => "Connection error: ",
+            'error_logout_prefix' => "Logout error: "
         ];
         
         foreach ($messages as $key => $message) {
@@ -269,7 +269,7 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test des URLs de redirection
+     * Test redirection URLs
      */
     public function testRedirectionUrls()
     {
@@ -285,9 +285,9 @@ class LoginControllerTest extends TestCase
     }
 
     /**
-     * Test de la structure de la requête SQL
+     * Test SQL query structure
      */
-public function testSqlQueryStructure()
+    public function testSqlQueryStructure()
     {
         $query = 'SELECT * FROM users where identifiant = :identifiant';
         
@@ -298,7 +298,7 @@ public function testSqlQueryStructure()
     }
 
     /**
-     * Test de sécurité - Paramètres liés
+     * Test security - Parameter binding
      */
     public function testSecurityParameterBinding()
     {
@@ -309,7 +309,7 @@ public function testSqlQueryStructure()
     }
 
     /**
-     * Test de validation du type PDO
+     * Test PDO parameter type validation
      */
     public function testPDOParameterType()
     {
@@ -318,24 +318,24 @@ public function testSqlQueryStructure()
     }
 
     /**
-     * Test de gestion d'exception
+     * Test exception handling logic
      */
     public function testExceptionHandlingLogic()
     {
-        // Simuler une exception
-        $exceptionMessage = "Erreur de connexion à la base de données";
-        $errorMessage = "Erreur lors de la connexion : " . $exceptionMessage;
+        // Simulate an exception
+        $exceptionMessage = "Database connection error";
+        $errorMessage = "Connection error: " . $exceptionMessage;
         
-        $this->assertEquals("Erreur lors de la connexion : Erreur de connexion à la base de données", $errorMessage);
-        $this->assertStringContainsString("Erreur lors de la connexion", $errorMessage);
+        $this->assertEquals("Connection error: Database connection error", $errorMessage);
+        $this->assertStringContainsString("Connection error", $errorMessage);
     }
 
     /**
-     * Test de validation des données utilisateur récupérées
+     * Test retrieved user data validation
      */
     public function testUserDataValidation()
     {
-        // Cas avec utilisateur valide
+        // Case with valid user
         $validUser = [
             'ID' => 123,
             'IDENTIFIANT' => 'user123',
@@ -350,22 +350,22 @@ public function testSqlQueryStructure()
         $this->assertIsString($validUser['IDENTIFIANT']);
         $this->assertIsString($validUser['PASSWORD']);
         
-        // Cas avec utilisateur inexistant
+        // Case with non-existent user
         $nullUser = null;
         $this->assertNull($nullUser);
     }
 
     /**
-     * Test de la logique de vérification d'utilisateur connecté
+     * Test user authentication status logic
      */
     public function testUserAuthenticationStatus()
     {
-        // Utilisateur non connecté
+        // User not logged in
         $this->assertArrayNotHasKey('user_id', $_SESSION);
         $isLoggedIn = !empty($_SESSION['user_id']);
         $this->assertFalse($isLoggedIn);
         
-        // Utilisateur connecté
+        // User logged in
         $_SESSION['user_id'] = 123;
         $isLoggedIn = !empty($_SESSION['user_id']);
         $this->assertTrue($isLoggedIn);

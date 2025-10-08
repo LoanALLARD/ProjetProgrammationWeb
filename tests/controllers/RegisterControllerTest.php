@@ -6,7 +6,7 @@ class RegisterControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -18,7 +18,7 @@ class RegisterControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -30,20 +30,20 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe RegisterController existe
+     * Test that RegisterController class exists
      */
     public function testRegisterControllerClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $controllerFile = __DIR__ . '/../../app/controllers/RegisterController.php';
         $this->assertFileExists($controllerFile);
         
-        // Test de base
+        // Basic test
         $this->assertTrue(true);
     }
 
     /**
-     * Test de la méthode index sans messages
+     * Test index method without messages
      */
     public function testIndexWithoutMessages()
     {
@@ -55,37 +55,37 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de la méthode index avec message de succès
+     * Test index method with success message
      */
     public function testIndexWithSuccessMessage()
     {
-        $_SESSION['success_message'] = "Inscription réussie !";
+        $_SESSION['success_message'] = "Registration successful!";
         
         $successMessage = $_SESSION['success_message'] ?? null;
-        $this->assertEquals("Inscription réussie !", $successMessage);
+        $this->assertEquals("Registration successful!", $successMessage);
         
-        // Simuler la suppression du message
+        // Simulate message deletion
         unset($_SESSION['success_message']);
         $this->assertArrayNotHasKey('success_message', $_SESSION);
     }
 
     /**
-     * Test de la méthode index avec message d'erreur
+     * Test index method with error message
      */
     public function testIndexWithErrorMessage()
     {
-        $_SESSION['error_message'] = "Erreur d'inscription !";
+        $_SESSION['error_message'] = "Registration error!";
         
         $errorMessage = $_SESSION['error_message'] ?? null;
-        $this->assertEquals("Erreur d'inscription !", $errorMessage);
+        $this->assertEquals("Registration error!", $errorMessage);
         
-        // Simuler la suppression du message
+        // Simulate message deletion
         unset($_SESSION['error_message']);
         $this->assertArrayNotHasKey('error_message', $_SESSION);
     }
 
     /**
-     * Test de validation - Mots de passe différents
+     * Test validation - Different passwords
      */
     public function testRegisterPasswordMismatch()
     {
@@ -95,13 +95,13 @@ class RegisterControllerTest extends TestCase
         $passwordsMatch = $password === $passwordConfirmation;
         $this->assertFalse($passwordsMatch);
         
-        // Message d'erreur attendu
-        $expectedError = "Les mots de passe ne correspondent pas !";
-        $this->assertEquals("Les mots de passe ne correspondent pas !", $expectedError);
+        // Expected error message
+        $expectedError = "Passwords do not match!";
+        $this->assertEquals("Passwords do not match!", $expectedError);
     }
 
     /**
-     * Test de validation - Mots de passe identiques
+     * Test validation - Identical passwords
      */
     public function testRegisterPasswordMatch()
     {
@@ -113,7 +113,7 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de validation d'email - Format invalide
+     * Test email validation - Invalid format
      */
     public function testRegisterInvalidEmailFormat()
     {
@@ -127,15 +127,15 @@ class RegisterControllerTest extends TestCase
         
         foreach ($invalidEmails as $email) {
             $isValid = filter_var($email, FILTER_VALIDATE_EMAIL);
-            $this->assertFalse($isValid, "Email invalide: $email");
+            $this->assertFalse($isValid, "Invalid email: $email");
         }
         
-        $expectedError = "Format d'email invalide !";
-        $this->assertEquals("Format d'email invalide !", $expectedError);
+        $expectedError = "Invalid email format!";
+        $this->assertEquals("Invalid email format!", $expectedError);
     }
 
     /**
-     * Test de validation d'email - Format valide
+     * Test email validation - Valid format
      */
     public function testRegisterValidEmailFormat()
     {
@@ -148,28 +148,28 @@ class RegisterControllerTest extends TestCase
         
         foreach ($validEmails as $email) {
             $isValid = filter_var($email, FILTER_VALIDATE_EMAIL);
-            $this->assertNotFalse($isValid, "Email valide: $email");
+            $this->assertNotFalse($isValid, "Valid email: $email");
         }
     }
 
     /**
-     * Test de validation de mot de passe - Trop court
+     * Test password validation - Too short
      */
     public function testRegisterPasswordTooShort()
     {
-        $shortPasswords = ['123', 'abc', '1234567']; // Moins de 8 caractères
+        $shortPasswords = ['123', 'abc', '1234567']; // Less than 8 characters
         
         foreach ($shortPasswords as $password) {
             $isValid = strlen($password) >= 8;
-            $this->assertFalse($isValid, "Mot de passe trop court: $password");
+            $this->assertFalse($isValid, "Password too short: $password");
         }
         
-        $expectedError = "Le mot de passe doit contenir au moins 8 caractères !";
-        $this->assertEquals("Le mot de passe doit contenir au moins 8 caractères !", $expectedError);
+        $expectedError = "Password must contain at least 8 characters!";
+        $this->assertEquals("Password must contain at least 8 characters!", $expectedError);
     }
 
     /**
-     * Test de validation de mot de passe - Longueur valide
+     * Test password validation - Valid length
      */
     public function testRegisterPasswordValidLength()
     {
@@ -177,12 +177,12 @@ class RegisterControllerTest extends TestCase
         
         foreach ($validPasswords as $password) {
             $isValid = strlen($password) >= 8;
-            $this->assertTrue($isValid, "Mot de passe valide: $password");
+            $this->assertTrue($isValid, "Valid password: $password");
         }
     }
 
     /**
-     * Test de trim des données d'entrée
+     * Test input data trimming
      */
     public function testRegisterDataTrimming()
     {
@@ -200,11 +200,11 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de gestion des valeurs par défaut avec l'opérateur ??
+     * Test default values handling with ?? operator
      */
     public function testRegisterDefaultValues()
     {
-        // Test avec $_POST vide
+        // Test with empty $_POST
         $_POST = [];
         
         $identifiant = trim($_POST['identifiant'] ?? '');
@@ -221,45 +221,45 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de hachage de mot de passe
+     * Test password hashing
      */
     public function testPasswordHashing()
     {
         $password = 'motdepasse123';
         $hash = password_hash($password, PASSWORD_DEFAULT);
         
-        // Vérifier que le hash est généré
+        // Check that hash is generated
         $this->assertNotEmpty($hash);
         $this->assertNotEquals($password, $hash);
         
-        // Vérifier que le hash peut être vérifié
+        // Check that hash can be verified
         $this->assertTrue(password_verify($password, $hash));
         
-        // Vérifier qu'un mauvais mot de passe échoue
-        $this->assertFalse(password_verify('mauvais_mot_de_passe', $hash));
+        // Check that wrong password fails
+        $this->assertFalse(password_verify('wrong_password', $hash));
     }
 
     /**
-     * Test de génération de date d'inscription
+     * Test registration date generation
      */
     public function testInscriptionDateGeneration()
     {
         $inscription_date = date("Y-m-d H:i:s");
         
-        // Vérifier le format de la date
+        // Check date format
         $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $inscription_date);
         
-        // Vérifier que c'est une date valide
+        // Check that it's a valid date
         $timestamp = strtotime($inscription_date);
         $this->assertNotFalse($timestamp);
         
-        // Vérifier que la date est récente (dans les 5 dernières secondes)
+        // Check that date is recent (within last 5 seconds)
         $now = time();
         $this->assertLessThanOrEqual(5, abs($now - $timestamp));
     }
 
     /**
-     * Test de la structure de la requête de vérification d'utilisateur existant
+     * Test existing user check query structure
      */
     public function testCheckUserExistsQueryStructure()
     {
@@ -274,7 +274,7 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de la structure de la requête d'insertion
+     * Test insert query structure
      */
     public function testInsertUserQueryStructure()
     {
@@ -291,7 +291,7 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de sécurité - Paramètres liés
+     * Test security - Parameter binding
      */
     public function testSecurityParameterBinding()
     {
@@ -304,17 +304,17 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test des messages d'erreur
+     * Test error messages
      */
     public function testErrorMessages()
     {
         $errorMessages = [
-            'password_mismatch' => "Les mots de passe ne correspondent pas !",
-            'invalid_email' => "Format d'email invalide !",
-            'password_length' => "Le mot de passe doit contenir au moins 8 caractères !",
-            'user_exists' => "Cet identifiant ou cet email est déjà utilisé !",
-            'registration_error' => "Erreur lors de l'inscription.",
-            'exception_prefix' => "Erreur lors de l'inscription : "
+            'password_mismatch' => "Passwords do not match!",
+            'invalid_email' => "Invalid email format!",
+            'password_length' => "Password must contain at least 8 characters!",
+            'user_exists' => "This username or email is already in use!",
+            'registration_error' => "Registration error.",
+            'exception_prefix' => "Registration error: "
         ];
         
         foreach ($errorMessages as $key => $message) {
@@ -324,7 +324,7 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test des URLs de redirection
+     * Test redirection URLs
      */
     public function testRedirectionUrls()
     {
@@ -340,29 +340,29 @@ class RegisterControllerTest extends TestCase
     }
 
     /**
-     * Test de la logique de session après inscription réussie
+     * Test session logic after successful registration
      */
-public function testSuccessfulRegistrationSessionLogic()
+    public function testSuccessfulRegistrationSessionLogic()
     {
         $identifiant = 'nouveauuser';
         
-        // Démarrer une session si pas encore active
+        // Start session if not already active
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
         
-        // Simuler la création de session après inscription
+        // Simulate session creation after registration
         $_SESSION['user_id'] = session_id();
         $_SESSION['identifiant'] = $identifiant;
         
-        // Vérifier que session_id() retourne maintenant quelque chose
+        // Check that session_id() now returns something
         $this->assertNotEmpty(session_id(), "Session ID should not be empty after session_start()");
         $this->assertNotEmpty($_SESSION['user_id']);
         $this->assertEquals($identifiant, $_SESSION['identifiant']);
     }
 
     /**
-     * Test de validation des types PDO
+     * Test PDO parameter types validation
      */
     public function testPDOParameterTypes()
     {
@@ -371,11 +371,11 @@ public function testSuccessfulRegistrationSessionLogic()
     }
 
     /**
-     * Test de validation complète des données
+     * Test complete data validation
      */
     public function testCompleteDataValidation()
     {
-        // Données valides
+        // Valid data
         $validData = [
             'identifiant' => 'user123',
             'email' => 'test@example.com',
@@ -384,7 +384,7 @@ public function testSuccessfulRegistrationSessionLogic()
             'passwordConfirmation' => 'motdepasse123'
         ];
         
-        // Tests de validation
+        // Validation tests
         $passwordsMatch = $validData['password'] === $validData['passwordConfirmation'];
         $emailValid = filter_var($validData['email'], FILTER_VALIDATE_EMAIL) !== false;
         $passwordLengthValid = strlen($validData['password']) >= 8;
@@ -393,11 +393,11 @@ public function testSuccessfulRegistrationSessionLogic()
         $this->assertTrue($emailValid);
         $this->assertTrue($passwordLengthValid);
         
-        // Test avec données invalides
+        // Test with invalid data
         $invalidData = [
-            'password' => '123', // Trop court
-            'passwordConfirmation' => '456', // Différent
-            'email' => 'email-invalide' // Format invalide
+            'password' => '123', // Too short
+            'passwordConfirmation' => '456', // Different
+            'email' => 'email-invalide' // Invalid format
         ];
         
         $passwordsMatchInvalid = $invalidData['password'] === $invalidData['passwordConfirmation'];
@@ -410,11 +410,11 @@ public function testSuccessfulRegistrationSessionLogic()
     }
 
     /**
-     * Test de démarrage automatique de session
+     * Test automatic session start
      */
     public function testSessionAutoStart()
     {
-        // Simuler la logique du constructeur
+        // Simulate constructor logic
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -423,11 +423,11 @@ public function testSuccessfulRegistrationSessionLogic()
     }
 
     /**
-     * Test de logique de comptage d'utilisateurs existants
+     * Test existing users count logic
      */
     public function testUserExistsCountLogic()
     {
-        // Simuler différents résultats de COUNT(*)
+        // Simulate different COUNT(*) results
         $count_no_user = 0;
         $count_existing_user = 1;
         $count_multiple_users = 2;

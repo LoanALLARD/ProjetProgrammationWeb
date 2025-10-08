@@ -9,23 +9,23 @@ class SiteMapControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
         $_SERVER = [];
         
-        // Créer un répertoire temporaire pour les tests
+        // Create temporary directory for tests
         $this->testControllerDir = sys_get_temp_dir() . '/test_controllers_' . uniqid();
         mkdir($this->testControllerDir, 0777, true);
         
-        // Créer des fichiers de contrôleur factices pour les tests
+        // Create dummy controller files for tests
         $this->createTestControllerFiles();
     }
 
     protected function tearDown(): void
     {
-        // Nettoyer le répertoire de test
+        // Clean up test directory
         $this->cleanupTestDirectory();
         
         $_SESSION = [];
@@ -42,7 +42,7 @@ class SiteMapControllerTest extends TestCase
             'RegisterController.php',
             'ForgottenPasswordController.php',
             'ResetPasswordController.php',
-            'SiteMapController.php' // Celui-ci devrait être ignoré
+            'SiteMapController.php' // This one should be ignored
         ];
 
         foreach ($testControllers as $controllerFile) {
@@ -64,9 +64,9 @@ class SiteMapControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe SiteMapController existe
+     * Test that SiteMapController class exists
      */
-public function testSiteMapControllerClassExists()
+    public function testSiteMapControllerClassExists()
     {
         $controllerFile = __DIR__ . '/../../app/controllers/SiteMapController.php';
         $this->assertFileExists($controllerFile);
@@ -76,22 +76,22 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test du constructeur et initialisation de la propriété pages
+     * Test constructor and pages property initialization
      */
     public function testConstructorInitializesPages()
     {
-        // Inclure la classe pour les tests
+        // Include class for tests
         require_once __DIR__ . '/../../app/controllers/SiteMapController.php';
         
         $controller = new \controllers\SiteMapController();
         $pages = $controller->getPages();
         
         $this->assertIsArray($pages);
-        $this->assertEmpty($pages); // Au début, le tableau doit être vide
+        $this->assertEmpty($pages); // Initially, array must be empty
     }
 
     /**
-     * Test de la méthode getPages()
+     * Test getPages() method
      */
     public function testGetPagesReturnsArray()
     {
@@ -104,19 +104,19 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de la fonction glob() - Recherche de fichiers
+     * Test glob() function - File search
      */
     public function testGlobFunctionality()
     {
-        // Tester glob avec notre répertoire de test
+        // Test glob with our test directory
         $controllerFiles = glob($this->testControllerDir . '/*.php');
         
         $this->assertIsArray($controllerFiles);
-        $this->assertCount(6, $controllerFiles); // 6 fichiers créés
+        $this->assertCount(6, $controllerFiles); // 6 files created
     }
 
     /**
-     * Test de la fonction basename()
+     * Test basename() function
      */
     public function testBasenameFunction()
     {
@@ -133,7 +133,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de l'exclusion de SiteMapController
+     * Test SiteMapController exclusion
      */
     public function testSiteMapControllerExclusion()
     {
@@ -142,7 +142,7 @@ public function testSiteMapControllerClassExists()
         
         $this->assertTrue($shouldBeIgnored);
         
-        // Test avec d'autres contrôleurs
+        // Test with other controllers
         $otherControllers = ['HomeController', 'LoginController', 'RegisterController'];
         
         foreach ($otherControllers as $controller) {
@@ -152,7 +152,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de suppression du suffixe "Controller"
+     * Test "Controller" suffix removal
      */
     public function testControllerNameProcessing()
     {
@@ -171,7 +171,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de génération d'URL
+     * Test URL generation
      */
     public function testUrlGeneration()
     {
@@ -189,7 +189,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de la fonction strtolower()
+     * Test strtolower() function
      */
     public function testStringToLowerFunction()
     {
@@ -208,7 +208,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de structure de données des pages
+     * Test page data structure
      */
     public function testPageDataStructure()
     {
@@ -225,23 +225,23 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de validation du titre de page
+     * Test page title validation
      */
     public function testPageTitleValidation()
     {
-        $pageTitle = "Plan du site";
+        $pageTitle = "Site Map";
         
         $this->assertIsString($pageTitle);
         $this->assertNotEmpty($pageTitle);
-        $this->assertEquals("Plan du site", $pageTitle);
+        $this->assertEquals("Site Map", $pageTitle);
     }
 
     /**
-     * Test de chemin de vue
+     * Test view path generation
      */
     public function testViewPathGeneration()
     {
-        // Simuler __DIR__ pour les tests
+        // Simulate __DIR__ for tests
         $mockDir = '/app/controllers';
         $expectedPath = '/app/views/siteMap.php';
         $viewPath = $mockDir . '/../views/siteMap.php';
@@ -251,58 +251,58 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de validation de l'existence de fichier
+     * Test file existence validation
      */
     public function testFileExistenceCheck()
     {
-        // Créer un fichier temporaire pour le test
+        // Create temporary file for test
         $tempFile = tempnam(sys_get_temp_dir(), 'test_view');
         file_put_contents($tempFile, '<?php echo "Test view"; ?>');
         
         $this->assertTrue(file_exists($tempFile));
         
-        // Nettoyer
+        // Clean up
         unlink($tempFile);
         
         $this->assertFalse(file_exists($tempFile));
     }
 
     /**
-     * Test de message d'erreur de vue
+     * Test view error message
      */
     public function testViewErrorMessage()
     {
         $viewPath = '/path/to/nonexistent/view.php';
-        $expectedError = "Erreur lors du chargement de la vue " . $viewPath;
+        $expectedError = "Error loading view " . $viewPath;
         
-        $this->assertStringContainsString("Erreur lors du chargement de la vue", $expectedError);
+        $this->assertStringContainsString("Error loading view", $expectedError);
         $this->assertStringContainsString($viewPath, $expectedError);
     }
 
     /**
-     * Test de traitement complet d'un contrôleur
+     * Test complete controller processing
      */
     public function testCompleteControllerProcessing()
     {
         $controllerFileName = 'HomeController.php';
         
-        // Étape 1: Extraire le nom
+        // Step 1: Extract name
         $filename = basename($controllerFileName, '.php');
         $this->assertEquals('HomeController', $filename);
         
-        // Étape 2: Vérifier qu'il ne s'agit pas de SiteMapController
+        // Step 2: Check it's not SiteMapController
         $isNotSiteMap = ($filename !== 'SiteMapController');
         $this->assertTrue($isNotSiteMap);
         
-        // Étape 3: Supprimer "Controller"
+        // Step 3: Remove "Controller"
         $pageName = str_replace('Controller', '', $filename);
         $this->assertEquals('Home', $pageName);
         
-        // Étape 4: Générer l'URL
+        // Step 4: Generate URL
         $url = "/index.php?url=" . strtolower($pageName) . "/index";
         $this->assertEquals('/index.php?url=home/index', $url);
         
-        // Étape 5: Créer la structure de données
+        // Step 5: Create data structure
         $pageData = [
             'title' => $pageName,
             'url'   => $url
@@ -315,14 +315,14 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de logique de filtrage des contrôleurs
+     * Test controller filtering logic
      */
     public function testControllerFiltering()
     {
         $allControllers = [
             'HomeController',
             'LoginController',
-            'SiteMapController', // Devrait être filtré
+            'SiteMapController', // Should be filtered
             'RegisterController',
             'AdminController'
         ];
@@ -342,7 +342,7 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de validation d'URL
+     * Test URL validation
      */
     public function testUrlValidation()
     {
@@ -360,14 +360,14 @@ public function testSiteMapControllerClassExists()
     }
 
     /**
-     * Test de cas limites avec des noms de contrôleurs
+     * Test edge cases with controller names
      */
-public function testEdgeCasesControllerNames()
+    public function testEdgeCasesControllerNames()
     {
         $edgeCases = [
             'TestController' => 'Test',
-            'MyLongControllerNameController' => 'MyLongName', // Corrigé précédemment
-            'ControllerController' => '', // str_replace enlève TOUS les "Controller"
+            'MyLongControllerNameController' => 'MyLongName', // Previously corrected
+            'ControllerController' => '', // str_replace removes ALL "Controller"
             'SimpleController' => 'Simple'
         ];
 
@@ -377,11 +377,10 @@ public function testEdgeCasesControllerNames()
         }
     }
 
-
     /**
-     * Test de robustesse avec différents formats de fichiers
+     * Test robustness with different file formats
      */
-public function testFileFormatRobustness()
+    public function testFileFormatRobustness()
     {
         $files = [
             '/full/path/to/HomeController.php',
@@ -392,18 +391,18 @@ public function testFileFormatRobustness()
         foreach ($files as $file) {
             $filename = basename($file, '.php');
             $this->assertStringEndsWith('Controller', $filename);
-            // Changer assertStringNotContains en assertStringNotContainsString
+            // Change assertStringNotContains to assertStringNotContainsString
             $this->assertStringNotContainsString('.php', $filename);
             $this->assertStringNotContainsString('/', $filename);
         }
     }
 
     /**
-     * Test de la logique de création du plan de site
+     * Test site map creation logic
      */
     public function testSiteMapCreationLogic()
     {
-        // Simuler le processus complet
+        // Simulate complete process
         $mockControllers = ['HomeController.php', 'LoginController.php'];
         $pages = [];
 

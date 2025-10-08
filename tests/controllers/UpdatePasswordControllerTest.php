@@ -6,7 +6,7 @@ class UpdatePasswordControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -18,7 +18,7 @@ class UpdatePasswordControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -30,24 +30,24 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe UpdatePasswordController existe
+     * Test that UpdatePasswordController class exists
      */
     public function testUpdatePasswordControllerClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $controllerFile = __DIR__ . '/../../app/controllers/UpdatePasswordController.php';
         $this->assertFileExists($controllerFile);
         
-        // Test de base
+        // Basic test
         $this->assertTrue(true);
     }
 
     /**
-     * Test de démarrage automatique de session dans le constructeur
+     * Test automatic session start in constructor
      */
     public function testConstructorStartsSession()
     {
-        // Simuler la logique du constructeur
+        // Simulate constructor logic
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -56,22 +56,22 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test index() sans code vérifié
+     * Test index() without verified code
      */
     public function testIndexWithoutCodeVerified()
     {
-        // Pas de code_verified en session
+        // No code_verified in session
         unset($_SESSION['code_verified']);
         
         $hasCodeVerified = isset($_SESSION['code_verified']) && $_SESSION['code_verified'] === true;
         $this->assertFalse($hasCodeVerified);
         
-        $expectedError = "Vous devez d'abord valider le code de réinitialisation.";
-        $this->assertEquals("Vous devez d'abord valider le code de réinitialisation.", $expectedError);
+        $expectedError = "You must first validate the reset code.";
+        $this->assertEquals("You must first validate the reset code.", $expectedError);
     }
 
     /**
-     * Test index() avec code_verified = false
+     * Test index() with code_verified = false
      */
     public function testIndexWithCodeVerifiedFalse()
     {
@@ -82,7 +82,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test index() avec code vérifié
+     * Test index() with verified code
      */
     public function testIndexWithCodeVerified()
     {
@@ -93,22 +93,22 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test index() - Gestion des messages de session
+     * Test index() - Session message handling
      */
     public function testIndexMessageHandling()
     {
         $_SESSION['code_verified'] = true;
-        $_SESSION['success_message'] = "Code validé !";
-        $_SESSION['error_message'] = "Erreur test";
+        $_SESSION['success_message'] = "Code validated!";
+        $_SESSION['error_message'] = "Test error";
         
-        // Récupérer les messages
+        // Retrieve messages
         $successMessage = $_SESSION['success_message'] ?? null;
         $errorMessage = $_SESSION['error_message'] ?? null;
         
-        $this->assertEquals("Code validé !", $successMessage);
-        $this->assertEquals("Erreur test", $errorMessage);
+        $this->assertEquals("Code validated!", $successMessage);
+        $this->assertEquals("Test error", $errorMessage);
         
-        // Simuler la suppression
+        // Simulate deletion
         unset($_SESSION['success_message'], $_SESSION['error_message']);
         
         $this->assertArrayNotHasKey('success_message', $_SESSION);
@@ -116,7 +116,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test updatePassword() sans code vérifié
+     * Test updatePassword() without verified code
      */
     public function testUpdatePasswordWithoutCodeVerified()
     {
@@ -125,12 +125,12 @@ class UpdatePasswordControllerTest extends TestCase
         $hasCodeVerified = isset($_SESSION['code_verified']) && $_SESSION['code_verified'] === true;
         $this->assertFalse($hasCodeVerified);
         
-        $expectedError = "Session expirée. Veuillez recommencer.";
-        $this->assertEquals("Session expirée. Veuillez recommencer.", $expectedError);
+        $expectedError = "Session expired. Please try again.";
+        $this->assertEquals("Session expired. Please try again.", $expectedError);
     }
 
     /**
-     * Test updatePassword() - Mot de passe vide
+     * Test updatePassword() - Empty password
      */
     public function testUpdatePasswordEmptyPassword()
     {
@@ -144,12 +144,12 @@ class UpdatePasswordControllerTest extends TestCase
         $isEmpty = empty($password) || empty($passwordConfirmation);
         $this->assertTrue($isEmpty);
         
-        $expectedError = "Veuillez remplir tous les champs.";
-        $this->assertEquals("Veuillez remplir tous les champs.", $expectedError);
+        $expectedError = "Please fill in all fields.";
+        $this->assertEquals("Please fill in all fields.", $expectedError);
     }
 
     /**
-     * Test updatePassword() - Confirmation vide
+     * Test updatePassword() - Empty confirmation
      */
     public function testUpdatePasswordEmptyConfirmation()
     {
@@ -165,7 +165,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test updatePassword() - Mots de passe différents
+     * Test updatePassword() - Different passwords
      */
     public function testUpdatePasswordMismatch()
     {
@@ -179,12 +179,12 @@ class UpdatePasswordControllerTest extends TestCase
         $passwordsMatch = $password === $passwordConfirmation;
         $this->assertFalse($passwordsMatch);
         
-        $expectedError = "Les mots de passe ne correspondent pas !";
-        $this->assertEquals("Les mots de passe ne correspondent pas !", $expectedError);
+        $expectedError = "Passwords do not match!";
+        $this->assertEquals("Passwords do not match!", $expectedError);
     }
 
     /**
-     * Test updatePassword() - Mots de passe identiques
+     * Test updatePassword() - Identical passwords
      */
     public function testUpdatePasswordMatch()
     {
@@ -200,7 +200,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test updatePassword() - Mot de passe trop court
+     * Test updatePassword() - Password too short
      */
     public function testUpdatePasswordTooShort()
     {
@@ -213,12 +213,12 @@ class UpdatePasswordControllerTest extends TestCase
         $isValidLength = strlen($password) >= 8;
         $this->assertFalse($isValidLength);
         
-        $expectedError = "Le mot de passe doit contenir au moins 8 caractères !";
-        $this->assertEquals("Le mot de passe doit contenir au moins 8 caractères !", $expectedError);
+        $expectedError = "Password must contain at least 8 characters!";
+        $this->assertEquals("Password must contain at least 8 characters!", $expectedError);
     }
 
     /**
-     * Test updatePassword() - Mot de passe longueur valide
+     * Test updatePassword() - Valid password length
      */
     public function testUpdatePasswordValidLength()
     {
@@ -233,7 +233,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test updatePassword() - Email de réinitialisation manquant
+     * Test updatePassword() - Missing reset email
      */
     public function testUpdatePasswordMissingResetEmail()
     {
@@ -245,12 +245,12 @@ class UpdatePasswordControllerTest extends TestCase
         $hasResetEmail = isset($_SESSION['reset_email']);
         $this->assertFalse($hasResetEmail);
         
-        $expectedError = "Session expirée. Veuillez recommencer.";
-        $this->assertEquals("Session expirée. Veuillez recommencer.", $expectedError);
+        $expectedError = "Session expired. Please try again.";
+        $this->assertEquals("Session expired. Please try again.", $expectedError);
     }
 
     /**
-     * Test updatePassword() - Email de réinitialisation présent
+     * Test updatePassword() - Reset email present
      */
     public function testUpdatePasswordWithResetEmail()
     {
@@ -265,7 +265,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de hachage de mot de passe
+     * Test password hashing
      */
     public function testPasswordHashing()
     {
@@ -275,11 +275,11 @@ class UpdatePasswordControllerTest extends TestCase
         $this->assertNotEmpty($hash);
         $this->assertNotEquals($password, $hash);
         $this->assertTrue(password_verify($password, $hash));
-        $this->assertFalse(password_verify('mauvais_mot_de_passe', $hash));
+        $this->assertFalse(password_verify('wrong_password', $hash));
     }
 
     /**
-     * Test de la structure de la requête UPDATE
+     * Test UPDATE query structure
      */
     public function testUpdateQueryStructure()
     {
@@ -293,7 +293,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de sécurité - Paramètres liés
+     * Test security - Parameter binding
      */
     public function testSecurityParameterBinding()
     {
@@ -306,18 +306,18 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de nettoyage de session après succès
+     * Test session cleanup after success
      */
     public function testSessionCleanupAfterSuccess()
     {
-        // Préparer une session avec toutes les variables de réinitialisation
+        // Prepare session with all reset variables
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time();
         $_SESSION['reset_email'] = 'test@example.com';
         $_SESSION['code_verified'] = true;
         $_SESSION['other_data'] = 'should_remain';
         
-        // Simuler le nettoyage après succès
+        // Simulate cleanup after success
         unset(
             $_SESSION['reset_code'],
             $_SESSION['reset_code_time'],
@@ -330,22 +330,22 @@ class UpdatePasswordControllerTest extends TestCase
         $this->assertArrayNotHasKey('reset_email', $_SESSION);
         $this->assertArrayNotHasKey('code_verified', $_SESSION);
         
-        // Les autres données doivent rester
+        // Other data should remain
         $this->assertArrayHasKey('other_data', $_SESSION);
     }
 
     /**
-     * Test des messages d'erreur
+     * Test error messages
      */
     public function testErrorMessages()
     {
         $errorMessages = [
-            'code_not_verified' => "Vous devez d'abord valider le code de réinitialisation.",
-            'session_expired' => "Session expirée. Veuillez recommencer.",
-            'empty_fields' => "Veuillez remplir tous les champs.",
-            'password_mismatch' => "Les mots de passe ne correspondent pas !",
-            'password_length' => "Le mot de passe doit contenir au moins 8 caractères !",
-            'update_error' => "Erreur lors de la mise à jour du mot de passe. Veuillez réessayer."
+            'code_not_verified' => "You must first validate the reset code.",
+            'session_expired' => "Session expired. Please try again.",
+            'empty_fields' => "Please fill in all fields.",
+            'password_mismatch' => "Passwords do not match!",
+            'password_length' => "Password must contain at least 8 characters!",
+            'update_error' => "Error updating password. Please try again."
         ];
         
         foreach ($errorMessages as $key => $message) {
@@ -356,20 +356,20 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test du message de succès
+     * Test success message
      */
     public function testSuccessMessage()
     {
-        $successMessage = "Votre mot de passe a été réinitialisé avec succès ! Vous pouvez maintenant vous connecter.";
+        $successMessage = "Your password has been reset successfully! You can now log in.";
         
         $this->assertIsString($successMessage);
         $this->assertNotEmpty($successMessage);
-        $this->assertStringContainsString("réinitialisé avec succès", $successMessage);
-        $this->assertStringContainsString("vous connecter", $successMessage);
+        $this->assertStringContainsString("reset successfully", $successMessage);
+        $this->assertStringContainsString("log in", $successMessage);
     }
 
     /**
-     * Test des URLs de redirection
+     * Test redirection URLs
      */
     public function testRedirectionUrls()
     {
@@ -386,7 +386,7 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de validation des types PDO
+     * Test PDO parameter types validation
      */
     public function testPDOParameterTypes()
     {
@@ -395,11 +395,11 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de validation complète des données
+     * Test complete data validation
      */
     public function testCompleteDataValidation()
     {
-        // Cas valide complet
+        // Complete valid case
         $_SESSION['code_verified'] = true;
         $_SESSION['reset_email'] = 'test@example.com';
         $_POST['password'] = 'nouveaumotdepasse123';
@@ -408,7 +408,7 @@ class UpdatePasswordControllerTest extends TestCase
         $password = $_POST['password'] ?? '';
         $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
         
-        // Toutes les validations
+        // All validations
         $hasCodeVerified = isset($_SESSION['code_verified']) && $_SESSION['code_verified'] === true;
         $hasResetEmail = isset($_SESSION['reset_email']);
         $fieldsNotEmpty = !empty($password) && !empty($passwordConfirmation);
@@ -426,11 +426,11 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de l'opérateur ?? pour les valeurs par défaut
+     * Test null coalescing operator ?? for default values
      */
     public function testNullCoalescingOperator()
     {
-        // Test avec $_POST vide
+        // Test with empty $_POST
         $_POST = [];
         
         $password = $_POST['password'] ?? '';
@@ -439,7 +439,7 @@ class UpdatePasswordControllerTest extends TestCase
         $this->assertEquals('', $password);
         $this->assertEquals('', $passwordConfirmation);
         
-        // Test avec valeurs présentes
+        // Test with present values
         $_POST['password'] = 'test123';
         $_POST['passwordConfirmation'] = 'test456';
         
@@ -451,21 +451,21 @@ class UpdatePasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de workflow complet de mise à jour
+     * Test complete update workflow
      */
     public function testCompleteUpdateWorkflow()
     {
-        // Étape 1: Session préparée correctement
+        // Step 1: Session properly prepared
         $_SESSION['code_verified'] = true;
         $_SESSION['reset_email'] = 'user@example.com';
         $_SESSION['reset_code'] = 123456;
         $_SESSION['reset_code_time'] = time() - 300;
         
-        // Étape 2: Données POST valides
+        // Step 2: Valid POST data
         $_POST['password'] = 'nouveaumotdepasse123';
         $_POST['passwordConfirmation'] = 'nouveaumotdepasse123';
         
-        // Étape 3: Validations
+        // Step 3: Validations
         $password = $_POST['password'] ?? '';
         $passwordConfirmation = $_POST['passwordConfirmation'] ?? '';
         
@@ -479,32 +479,32 @@ class UpdatePasswordControllerTest extends TestCase
         
         $this->assertTrue($workflowValid);
         
-        // Étape 4: Hachage
+        // Step 4: Hashing
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $this->assertTrue(password_verify($password, $hash));
         
-        // Étape 5: Données pour la requête
+        // Step 5: Data for query
         $email = $_SESSION['reset_email'];
         $this->assertEquals('user@example.com', $email);
     }
 
     /**
-     * Test de gestion des erreurs d'exécution de requête
+     * Test query execution error handling
      */
     public function testQueryExecutionErrorHandling()
     {
-        // Simuler un échec d'exécution
-        $queryExecutionSuccess = false; // Simuler $query->execute() qui retourne false
+        // Simulate execution failure
+        $queryExecutionSuccess = false; // Simulate $query->execute() returning false
         
         if ($queryExecutionSuccess) {
-            $message = "Votre mot de passe a été réinitialisé avec succès ! Vous pouvez maintenant vous connecter.";
+            $message = "Your password has been reset successfully! You can now log in.";
             $redirectUrl = 'index.php?url=login/index';
         } else {
-            $message = "Erreur lors de la mise à jour du mot de passe. Veuillez réessayer.";
+            $message = "Error updating password. Please try again.";
             $redirectUrl = 'index.php?url=update-password/index';
         }
         
-        $this->assertEquals("Erreur lors de la mise à jour du mot de passe. Veuillez réessayer.", $message);
+        $this->assertEquals("Error updating password. Please try again.", $message);
         $this->assertEquals('index.php?url=update-password/index', $redirectUrl);
     }
 }

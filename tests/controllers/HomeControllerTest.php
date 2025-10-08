@@ -6,7 +6,7 @@ class HomeControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        // Nettoyer les variables globales
+        // Clean global variables
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -18,7 +18,7 @@ class HomeControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean up after each test
         $_SESSION = [];
         $_POST = [];
         $_GET = [];
@@ -30,170 +30,170 @@ class HomeControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe HomeController existe
+     * Test that HomeController class exists
      */
     public function testHomeControllerClassExists()
     {
-        // Vérifier que le fichier existe
+        // Check that the file exists
         $controllerFile = __DIR__ . '/../../app/controllers/HomeController.php';
         $this->assertFileExists($controllerFile);
         
-        // Inclure le fichier pour vérifier la syntaxe
-        $this->assertTrue(true); // Test basique sans instanciation
+        // Include the file to check syntax
+        $this->assertTrue(true); // Basic test without instantiation
     }
 
     /**
-     * Test de validation des données pour addNote - Email vide
+     * Test data validation for addNote - Empty title
      */
     public function testAddNoteValidationEmptyTitle()
     {
-        // Simuler la logique de validation sans instancier le contrôleur
+        // Simulate validation logic without instantiating the controller
         $user_id = 123;
-        $titre = ''; // Titre vide
-        $contenu = 'Contenu test';
+        $titre = ''; // Empty title
+        $contenu = 'Test content';
         
-        // Test de la logique de validation
+        // Test validation logic
         $isValid = !empty($user_id) && !empty($titre) && !empty($contenu);
-        $this->assertFalse($isValid, "La validation devrait échouer avec un titre vide");
+        $this->assertFalse($isValid, "Validation should fail with empty title");
     }
 
     /**
-     * Test de validation des données pour addNote - Contenu vide
+     * Test data validation for addNote - Empty content
      */
     public function testAddNoteValidationEmptyContent()
     {
         $user_id = 123;
-        $titre = 'Mon titre';
-        $contenu = ''; // Contenu vide
+        $titre = 'My title';
+        $contenu = ''; // Empty content
         
         $isValid = !empty($user_id) && !empty($titre) && !empty($contenu);
-        $this->assertFalse($isValid, "La validation devrait échouer avec un contenu vide");
+        $this->assertFalse($isValid, "Validation should fail with empty content");
     }
 
     /**
-     * Test de validation des données pour addNote - Utilisateur non connecté
+     * Test data validation for addNote - No logged user
      */
     public function testAddNoteValidationNoUser()
     {
-        $user_id = null; // Pas d'utilisateur
-        $titre = 'Mon titre';
-        $contenu = 'Mon contenu';
+        $user_id = null; // No user
+        $titre = 'My title';
+        $contenu = 'My content';
         
         $isValid = !empty($user_id) && !empty($titre) && !empty($contenu);
-        $this->assertFalse($isValid, "La validation devrait échouer sans utilisateur connecté");
+        $this->assertFalse($isValid, "Validation should fail without logged user");
     }
 
     /**
-     * Test de validation des données pour addNote - Données valides
+     * Test data validation for addNote - Valid data
      */
     public function testAddNoteValidationValid()
     {
         $user_id = 123;
-        $titre = 'Mon titre';
-        $contenu = 'Mon contenu';
+        $titre = 'My title';
+        $contenu = 'My content';
         
         $isValid = !empty($user_id) && !empty($titre) && !empty($contenu);
-        $this->assertTrue($isValid, "La validation devrait réussir avec des données valides");
+        $this->assertTrue($isValid, "Validation should succeed with valid data");
     }
 
     /**
-     * Test de génération de date pour les notes
+     * Test date generation for notes
      */
     public function testNoteDateGeneration()
     {
         $date = date("Y-m-d");
         
-        // Vérifier le format de la date
+        // Check date format
         $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}$/', $date);
         
-        // Vérifier que c'est une date valide
+        // Check that it's a valid date
         $dateParts = explode('-', $date);
         $this->assertCount(3, $dateParts);
         $this->assertTrue(checkdate($dateParts[1], $dateParts[2], $dateParts[0]));
     }
 
     /**
-     * Test de validation pour modifyNote - Méthode POST
+     * Test validation for modifyNote - POST method
      */
     public function testModifyNotePostValidation()
     {
         $user_id = 123;
         $note_id = '456';
-        $titre = 'Nouveau titre';
-        $contenu = 'Nouveau contenu';
+        $titre = 'New title';
+        $contenu = 'New content';
         
-        // Simuler la validation POST
+        // Simulate POST validation
         $isValidPost = !empty($note_id) && !empty($titre) && !empty($contenu);
-        $this->assertTrue($isValidPost, "La validation POST devrait réussir");
+        $this->assertTrue($isValidPost, "POST validation should succeed");
         
-        // Test avec données manquantes
+        // Test with missing data
         $isValidPostIncomplete = !empty($note_id) && !empty('') && !empty($contenu);
-        $this->assertFalse($isValidPostIncomplete, "La validation POST devrait échouer avec titre vide");
+        $this->assertFalse($isValidPostIncomplete, "POST validation should fail with empty title");
     }
 
     /**
-     * Test de validation pour modifyNote - Méthode GET
+     * Test validation for modifyNote - GET method
      */
     public function testModifyNoteGetValidation()
     {
         $user_id = 123;
         $note_id = '456';
         
-        // Simuler la validation GET
+        // Simulate GET validation
         $isValidGet = !empty($note_id);
-        $this->assertTrue($isValidGet, "La validation GET devrait réussir avec un ID");
+        $this->assertTrue($isValidGet, "GET validation should succeed with an ID");
         
-        // Test sans ID
+        // Test without ID
         $isValidGetNoId = !empty('');
-        $this->assertFalse($isValidGetNoId, "La validation GET devrait échouer sans ID");
+        $this->assertFalse($isValidGetNoId, "GET validation should fail without ID");
     }
 
     /**
-     * Test de validation pour deleteNote
+     * Test validation for deleteNote
      */
     public function testDeleteNoteValidation()
     {
         $user_id = 123;
         $note_id = '456';
         
-        // Validation avec données valides
+        // Validation with valid data
         $isValid = !empty($user_id) && !empty($note_id);
-        $this->assertTrue($isValid, "La validation delete devrait réussir");
+        $this->assertTrue($isValid, "Delete validation should succeed");
         
-        // Validation sans utilisateur
+        // Validation without user
         $isValidNoUser = !empty(null) && !empty($note_id);
-        $this->assertFalse($isValidNoUser, "La validation delete devrait échouer sans utilisateur");
+        $this->assertFalse($isValidNoUser, "Delete validation should fail without user");
         
-        // Validation sans ID
+        // Validation without ID
         $isValidNoId = !empty($user_id) && !empty('');
-        $this->assertFalse($isValidNoId, "La validation delete devrait échouer sans ID");
+        $this->assertFalse($isValidNoId, "Delete validation should fail without ID");
     }
 
     /**
-     * Test des messages d'erreur et de succès
+     * Test error and success messages
      */
     public function testSessionMessages()
     {
         $messages = [
-            'success_add' => "Note ajoutée avec succès !",
-            'success_modify' => "Note modifiée avec succès !",
-            'success_delete' => "Note supprimée avec succès !",
-            'error_fields' => "Vous devez être connecté et remplir tous les champs.",
-            'error_required' => "Tous les champs sont requis.",
-            'error_login' => "Vous devez être connecté.",
-            'error_delete' => "Impossible de supprimer la note.",
-            'error_not_found' => "Note introuvable."
+            'success_add' => "Note added successfully!",
+            'success_modify' => "Note modified successfully!",
+            'success_delete' => "Note deleted successfully!",
+            'error_fields' => "You must be logged in and fill all fields.",
+            'error_required' => "All fields are required.",
+            'error_login' => "You must be logged in.",
+            'error_delete' => "Unable to delete the note.",
+            'error_not_found' => "Note not found."
         ];
         
         foreach ($messages as $key => $message) {
             $this->assertIsString($message);
             $this->assertNotEmpty($message);
-            $this->assertGreaterThan(5, strlen($message)); // Messages significatifs
+            $this->assertGreaterThan(5, strlen($message)); // Meaningful messages
         }
     }
 
     /**
-     * Test des URLs de redirection
+     * Test redirection URLs
      */
     public function testRedirectionUrls()
     {
@@ -210,7 +210,7 @@ class HomeControllerTest extends TestCase
     }
 
     /**
-     * Test de la structure des requêtes SQL (vérification des patterns)
+     * Test SQL query patterns structure
      */
     public function testSqlQueryPatterns()
     {
@@ -224,12 +224,12 @@ class HomeControllerTest extends TestCase
         foreach ($queries as $type => $query) {
             $this->assertStringContainsString('notes', $query);
             $this->assertStringContainsString('USER_ID', $query);
-            $this->assertStringContainsString(':', $query); // Paramètres liés
+            $this->assertStringContainsString(':', $query); // Bound parameters
         }
     }
 
     /**
-     * Test de sécurité - Paramètres liés
+     * Test security - Parameter binding
      */
     public function testSecurityParameterBinding()
     {
@@ -242,21 +242,21 @@ class HomeControllerTest extends TestCase
     }
 
     /**
-     * Test des types PDO
+     * Test PDO parameter types
      */
     public function testPDOParameterTypes()
     {
-        // Vérifier que les constantes PDO existent
+        // Check that PDO constants exist
         $this->assertTrue(defined('PDO::PARAM_INT'));
         $this->assertTrue(defined('PDO::PARAM_STR'));
         
-        // Vérifier les valeurs des constantes
+        // Check constant values
         $this->assertEquals(1, \PDO::PARAM_INT);
         $this->assertEquals(2, \PDO::PARAM_STR);
     }
 
     /**
-     * Test de validation des méthodes HTTP
+     * Test HTTP methods validation
      */
     public function testHttpMethods()
     {
@@ -269,7 +269,7 @@ class HomeControllerTest extends TestCase
     }
 
     /**
-     * Test de validation des IDs numériques
+     * Test numeric ID validation
      */
     public function testNumericIdValidation()
     {
@@ -288,21 +288,21 @@ class HomeControllerTest extends TestCase
     }
 
     /**
-     * Test de la logique de session utilisateur
+     * Test user session logic
      */
     public function testUserSessionLogic()
     {
-        // Test avec utilisateur connecté
+        // Test with logged user
         $_SESSION['user_id'] = 123;
         $isLoggedIn = !empty($_SESSION['user_id']);
         $this->assertTrue($isLoggedIn);
         
-        // Test sans utilisateur
+        // Test without user
         $_SESSION['user_id'] = null;
         $isLoggedIn = !empty($_SESSION['user_id']);
         $this->assertFalse($isLoggedIn);
         
-        // Test avec session vide
+        // Test with empty session
         unset($_SESSION['user_id']);
         $isLoggedIn = !empty($_SESSION['user_id']);
         $this->assertFalse($isLoggedIn);

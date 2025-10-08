@@ -1,18 +1,19 @@
 <?php
 class Note
 {
-    // attributes of the class Notes in the database 
+    // these attributes are the attributes of my Note table
+    // private $_id; I don't think it's necessary because id is auto-incrementing.
     private $_titre;
     private $_contenue;
     private $_date;
 
-    //constructer
+    // Constructor
     public function __construct(array $data)
     {
         $this->hydrate($data);
     }
 
-    //hydration
+    // Hydratation
     public function hydrate(array $data)
     {
         foreach($data as $key => $value)
@@ -25,7 +26,7 @@ class Note
     }
 
 
-    //SETTERS
+    // Setters
     public function setTitre($newTitre){
         if(is_string($newTitre)){
             $this->_titre = $newTitre;
@@ -56,5 +57,7 @@ class Note
     public function getDate(){
         return $this->_date;
     }
+
+    // Methods
      
 }

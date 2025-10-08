@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-// Inclure manuellement les classes nécessaires
+// Manually include the necessary classes
 require_once __DIR__ . '/../../app/core/Database.php';
 require_once __DIR__ . '/../../app/controllers/ForgottenPasswordController.php';
 
@@ -12,7 +12,7 @@ class ForgottenPasswordControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        // Nettoyer la session
+        // Clear session
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
@@ -23,7 +23,7 @@ class ForgottenPasswordControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        // Nettoyer après chaque test
+        // Clean after each test
         $_SESSION = [];
         $_POST = [];
         $_SERVER = [];
@@ -34,40 +34,40 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test que la classe existe et peut être instanciée
+     * Test that the class exists and can be instantiated
      */
     public function testForgottenPasswordControllerExists()
     {
         $this->assertTrue(class_exists('controllers\ForgottenPasswordController'));
         
-        // Test d'instanciation sans problème de DB
+        // DB instantiation test without issues
         try {
             $controller = new \controllers\ForgottenPasswordController();
             $this->assertInstanceOf(\controllers\ForgottenPasswordController::class, $controller);
         } catch (Exception $e) {
-            // Si la DB n'est pas accessible, c'est normal dans les tests
+            // If the DB is not accessible, this is normal in tests.
             $this->assertStringContainsString('connexion', $e->getMessage());
         }
     }
 
     /**
-     * Test de validation d'email vide
+     * Empty email validation test
      */
     public function testChangePasswordWithEmptyEmailLogic()
     {
-        // Simuler un email vide
+        // Simulate an empty email
         $_POST['email'] = '';
         
-        // Vérifier la logique de validation
+        // Check the validation logic
         $this->assertTrue(empty($_POST['email']));
         
-        // Simuler le message d'erreur qui serait défini
+        // Simulate the error message that would be defined
         $expectedMessage = "Veuillez saisir une adresse e-mail.";
         $this->assertEquals("Veuillez saisir une adresse e-mail.", $expectedMessage);
     }
 
     /**
-     * Test de trim des emails
+     * Email trim test
      */
     public function testEmailTrimmingLogic()
     {
@@ -79,14 +79,14 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de la logique de génération de code
+     * Testing the code generation logic
      */
     public function testCodeGenerationLogic()
     {
-        // Simuler la génération de code comme dans votre méthode
+        // Simulate code generation as in your method
         $code = random_int(100000, 999999);
         
-        // Vérifications
+        // Verifications
         $this->assertIsInt($code);
         $this->assertGreaterThanOrEqual(100000, $code);
         $this->assertLessThanOrEqual(999999, $code);
@@ -94,22 +94,22 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de génération de codes multiples pour vérifier l'aléatoire
+     * Multiple code generation test to verify randomness
      */
     public function testCodeGenerationUniqueness()
     {
         $codes = [];
         
-        // Générer plusieurs codes
+        // Generate multiple codes
         for ($i = 0; $i < 10; $i++) {
             $codes[] = random_int(100000, 999999);
         }
         
-        // Vérifier qu'ils ne sont pas tous identiques
+        // Check that they are not all identical.
         $uniqueCodes = array_unique($codes);
         $this->assertGreaterThan(1, count($uniqueCodes), "Les codes devraient être différents");
         
-        // Vérifier que tous sont dans la bonne plage
+        // Check that all are within the correct range.
         foreach ($codes as $code) {
             $this->assertGreaterThanOrEqual(100000, $code);
             $this->assertLessThanOrEqual(999999, $code);
@@ -117,7 +117,7 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de validation d'email
+     * Email validation test
      */
     public function testEmailValidationLogic()
     {
@@ -145,42 +145,42 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de la gestion de session
+     * Session management test
      */
     public function testSessionHandling()
     {
-        // Tester le démarrage de session
+        // Testing session start-up
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
         
         $this->assertEquals(PHP_SESSION_ACTIVE, session_status());
         
-        // Tester la sauvegarde en session
+        // Testing the backup during a session
         $_SESSION['test_code'] = 123456;
         $_SESSION['test_time'] = time();
         
         $this->assertEquals(123456, $_SESSION['test_code']);
         $this->assertIsInt($_SESSION['test_time']);
         
-        // Tester la suppression
+        // Test deletion
         unset($_SESSION['test_message']);
         $this->assertArrayNotHasKey('test_message', $_SESSION);
     }
 
     /**
-     * Test de la structure du code de réinitialisation
+     * Testing the reset code structure
      */
     public function testResetCodeStructure()
     {
-        // Simuler la sauvegarde d'un code en session
+        // Simulate saving code during a session
         $code = random_int(100000, 999999);
         $time = time();
         
         $_SESSION['reset_code'] = $code;
         $_SESSION['reset_code_time'] = $time;
         
-        // Vérifications
+        // Verifications
         $this->assertArrayHasKey('reset_code', $_SESSION);
         $this->assertArrayHasKey('reset_code_time', $_SESSION);
         $this->assertEquals($code, $_SESSION['reset_code']);
@@ -188,25 +188,25 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de la logique de redirection - CORRIGÉ
+     * Redirection logic test - CORRECTED
      */
     public function testRedirectionLogic()
     {
-        // Simuler les différents cas de redirection
+        // Simulate different redirection scenarios
         $redirections = [
             'index.php?url=forgotten-password/index',
             'index.php?url=reset-password/index'
         ];
         
         foreach ($redirections as $url) {
-            // Utiliser assertStringContainsString au lieu de assertStringContains
+            // Use assertStringContainsString instead of assertStringContains
             $this->assertStringContainsString('index.php?url=', $url);
             $this->assertNotEmpty($url);
         }
     }
 
     /**
-     * Test de messages d'erreur
+     * Error message testing
      */
     public function testErrorMessages()
     {
@@ -223,17 +223,17 @@ class ForgottenPasswordControllerTest extends TestCase
     }
 
     /**
-     * Test de configuration SMTP (structure)
+     * SMTP configuration test (structure)
      */
     public function testSMTPConfigurationStructure()
     {
-        // Vérifier que le fichier de config existe
+        // Check that the configuration file exists
         $configPath = __DIR__ . '/../../app/config/config.php';
         
         if (file_exists($configPath)) {
             $config = require $configPath;
             
-            // Vérifier que les clés SMTP existent dans la config
+            // Check that the SMTP keys exist in the configuration
             $requiredKeys = ['smtp_host', 'smtp_port', 'smtp_user', 'smtp_pass', 'smtp_secure'];
             
             foreach ($requiredKeys as $key) {

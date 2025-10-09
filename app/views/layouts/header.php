@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="q0o4ItVpRTFX3NS8kHF1zzrDVYmfLgq1GeC5PwKXd2k" />
-    <meta name="keywords" content="Blocnotes, php, projet, étudiant, Application web, iut">
+    <meta name="keywords" content="Blocnotes, php, projet, étudiant, Application web, iut, mmnotes">
     <meta name="description" content="Application web simple et intuitive pour créer, organiser et partager vos notes en ligne. Accédez à vos idées partout, en toute sécurité.">
     <title><?= isset($pageTitle) ? $pageTitle : 'Sans titre' ?> | MMNotes</title>
     <link rel="stylesheet" href="/public/assets/styles/style.css">

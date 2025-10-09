@@ -58,10 +58,10 @@
                             <p class="note-text"><?= nl2br(htmlspecialchars($note['contenu'])) ?></p>
                         </div>
                         <div class="note-actions">
-                            <button class="btn-edit" onclick="window.location.href='index.php?url=home/modifyNote&id=<?= htmlspecialchars($note['id']) ?>'"><i class="fa-solid fa-file-pen"></i></button>
+                            <button class="btn-edit" aria-label="Éditer l'élément" onclick="window.location.href='index.php?url=home/modifyNote&id=<?= htmlspecialchars($note['id']) ?>'"><i class="fa-solid fa-file-pen"></i></button>
                             <form method="POST" action="index.php?url=home/deleteNote" class="delete-form">
                                 <input type="hidden" name="id" value="<?= htmlspecialchars($note['id']) ?>">
-                                <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette note ?')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="submit" class="btn-delete" aria-label="Supprimer l'élément" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette note ?')"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </div>
                     </div>

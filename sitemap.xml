@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=home/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=sitemap/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=login/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=register/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=mentionsLegales</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=forgottenpassword/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mmnotes.alwaysdata.net/index.php?url=mentionslegales/index</loc>
+  <lastmod>2025-10-09T12:39:53+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
